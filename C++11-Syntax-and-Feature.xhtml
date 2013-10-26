@@ -11510,7 +11510,7 @@ constexpr int f( bool b )
     return b ? throw 0 : 0 ;
 }
 
-// エラー、絶対に定数式に鳴らない。
+// エラー、絶対に定数式にならない。
 constexpr int g( )
 {
     throw ;
