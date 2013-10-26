@@ -4609,9 +4609,9 @@ public :
         : a(a), b(b) { }
 
     // コピーコンストラクターが暗黙的に定義される
-    Closure( Cllosure &amp; ) = default ;
+    Closure( Closure &amp; ) = default ;
     // ムーブコンストラクターが暗黙的に定義される可能性がある
-    Closure( Cllosure &amp;&amp; ) = default ;
+    Closure( Closure &amp;&amp; ) = default ;
 
     // デフォルトコンストラクターはdelete定義される
     Closure() = delete ;
@@ -5288,7 +5288,7 @@ typename指定子も使うことができる。
 </p>
 
 <pre>
-teplate &lt; typename T &gt;
+template &lt; typename T &gt;
 void f()
 {
     typename T::type() ; // OK
@@ -5729,7 +5729,7 @@ struct Derived : Base {} ;
 void f(Base &amp; base)
 {// baseはDerivedを指しているとする
     Derived &amp; ref = dynamic_cast&lt;Derived &amp;&gt;(base) ;
-    Derived * ptr = dynamic_csat&lt;Derived *&gt;(&amp;base) ;
+    Derived * ptr = dynamic_cast&lt;Derived *&gt;(&amp;base) ;
 }
 </pre>
 
@@ -6595,7 +6595,7 @@ short x = 0 ;
 // unsigned int型は16bitであるとする。
 unsigned int x = 1 ;
 // result = 2<sup>16</sup> - 1 = 65536 - 1 = 65535
-unsinged int result = -x ;
+unsigned int result = -x ;
 
 x = 100 ;
 // result = 2<sup>16</sup> - 100 = 65536 - 100 = 65436
@@ -6721,7 +6721,7 @@ sizeof( &amp;f ) ;
 // エラー、関数を使うことはできない
 sizeof( f ) ;
 // エラー、不完全型を使うことはできない
-sizoef( Incomplete ) ;
+sizeof( Incomplete ) ;
 </pre>
 
 <p>
@@ -7446,7 +7446,7 @@ int main()
 </p>
 
 <pre>
-// placemente delete
+// placement delete
 void operator delete( void *, int ) throw() ;
 
 struct C
@@ -7463,7 +7463,7 @@ void f()
     delete ptr ;
 
     // 擬似デストラクター呼び出し
-    ptr->~C() ;
+    ptr-&gt;~C() ;
     // operator deleteの明示的な呼び出し
     operator delete( ptr, 0 ) ;
 }
@@ -8639,7 +8639,7 @@ int main()
 </p>
 
 <p>
-条件演算子の第一オペランドはboolに変換される。値がtrueであれば、第二オペランドの式が評価され、その結果が返される。値がfalseであれば、第三オペランドの式が評価され、その結果が返される。第二オペランドと第三オペランドは、どちらか片方いしか評価されない。
+条件演算子の第一オペランドはboolに変換される。値がtrueであれば、第二オペランドの式が評価され、その結果が返される。値がfalseであれば、第三オペランドの式が評価され、その結果が返される。第二オペランドと第三オペランドは、どちらか片方しか評価されない。
 </p>
 
 <pre>
@@ -13409,7 +13409,7 @@ int main()
 
 <pre>
 // ヘッダーファイル、C_functions.hは、C言語で書かれているものとする
-namespace obsolate_C_lib
+namespace obsolete_C_lib
 {
     extern "C"
     {
@@ -14296,11 +14296,11 @@ void g( int const a, decltype(a) * b)  ;
 
 <pre>
 // void (int)
-void f( regisiter int ) ; 
+void f( register int ) ; 
 </pre>
 
 <p>
-ただし、現行のC++には、仮引数の型に影響を与えるストレージクラス指定子は、regisiterだけである。regisiterの使用は推奨されていない。
+ただし、現行のC++には、仮引数の型に影響を与えるストレージクラス指定子は、registerだけである。registerの使用は推奨されていない。
 </p>
 
 <p>
@@ -16079,7 +16079,7 @@ int main()
 
 struct S
 {
-    void operator [] ( std::initiazlier_list&lt;int&gt; ) { }
+    void operator [] ( std::initializer_list&lt;int&gt; ) { }
 } ;
 
 int main()
@@ -16179,7 +16179,7 @@ int x = double(0.0) ; // 縮小変換、doubleからint
 </pre>
 
 <p>
-浮動小数点数型の間の変換のうち、long doubleからdoubleかflaotへの変換、doubleからfloatへの変換。
+浮動小数点数型の間の変換のうち、long doubleからdoubleかfloatへの変換、doubleからfloatへの変換。
 </p>
 
 <pre>
@@ -16496,7 +16496,7 @@ prvalueの一時オブジェクトが生成されることに注意しなけれ�
 <pre>
 // 以下はOK
 int &amp;&amp; r1 = { } ; // OK、rvalueリファレンス
-int const &amp; r2 = { } ; // OK、constかつ非vloatileなlvalueリファレンス
+int const &amp; r2 = { } ; // OK、constかつ非volatileなlvalueリファレンス
 
 // 以下はエラー
 int &amp; r3 = { } ; // エラー、非constなlvalueリファレンス
@@ -16549,7 +16549,7 @@ std::initializer_list&lt;E&gt;型のオブジェクトは、{}で囲まれた初
 </p>
 
 <pre>
-std::intitializer_list&lt;int&gt; list = { 1, 2, 3 } ;
+std::initializer_list&lt;int&gt; list = { 1, 2, 3 } ;
 </pre>
 
 <p>
@@ -16560,7 +16560,7 @@ std::intitializer_list&lt;int&gt; list = { 1, 2, 3 } ;
 int __array[3] = { 1, 2, 3 } ;
 // 実装依存のstd::initializer_list&lt;int&gt;の初期化の実装例
 // 配列の先頭要素へのポインターと、最後からひとつ後ろのポインターを格納する
-std::intitializer_list&lt;int&gt; list( array, array + 3 ) ;
+std::initializer_list&lt;int&gt; list( array, array + 3 ) ;
 </pre>
 
 <p>
@@ -16599,7 +16599,7 @@ std::intitializer_list&lt;int&gt; list( array, array + 3 ) ;
 クラス指定子:
     class-key 識別子<sub>opt</sub> 基本クラス指定<sub>opt</sub> final<sub>opt</sub> { メンバー指定<sub>opt</sub> }
 
-clas-key:
+class-key:
     class
     struct
     union
@@ -16725,7 +16725,7 @@ struct Derived : Base { } ;
 </pre>
 
 <p>
-この場合、sizoef(Base)とsizeof(Derived)は、同じ値を返すかもしれない。
+この場合、sizeof(Base)とsizeof(Derived)は、同じ値を返すかもしれない。
 </p>
 
 <article>
@@ -19027,7 +19027,7 @@ void f( Shape * ptr )
 </pre>
 
 <pre>
-struct abstruct_class
+struct abstract_class
 {
     virtual void f() = 0 ;
 } ;
@@ -19051,7 +19051,7 @@ struct X
 
 <pre>
 struct Base { int f ; }
-struct abstruct_class : Base
+struct abstract_class : Base
 {
     virtual void f() new = 0 ;// virt-specifierの後
 } ;
@@ -19066,12 +19066,12 @@ TODO: virt-specifierに対する適切な訳語。これは将来のドラフト
 </p>
 
 <pre>
-struct abstruct_class
+struct abstract_class
 {
     virtual void f() = 0 ;
 } ;
 
-struct Derived : abstruct_class
+struct Derived : abstract_class
 {
     void f() { }
 } ;
@@ -19082,16 +19082,16 @@ struct Derived : abstruct_class
 </p>
 
 <pre>
-struct abstruct_class
+struct abstract_class
 {
     virtual void f() = 0 ;
 } ;
 
-// エラー、abstruct_classのオブジェクトは作れない
-void f( abstruct_class param )
+// エラー、abstract_classのオブジェクトは作れない
+void f( abstract_class param )
 {
-    abstruct_class obj ; // エラー
-    new abstruct_class ; // エラー
+    abstract_class obj ; // エラー
+    new abstract_class ; // エラー
 }
 </pre>
 
@@ -19101,13 +19101,13 @@ void f( abstruct_class param )
 
 
 <pre>
-struct abstruct_class
+struct abstract_class
 {
     virtual void f() = 0 ;
 } ;
 
 // OK、ポインターとリファレンスはよい
-void f( abstruct_class *, abstruct_class &amp; ) ;
+void f( abstract_class *, abstract_class &amp; ) ;
 </pre>
 
 
@@ -19345,7 +19345,7 @@ private :
 class Base { } ;
 
 class Derived_by_public : public Base { } ; // public派生
-class erived_by_protected : protected Base { } ; // protected派生
+class Derived_by_protected : protected Base { } ; // protected派生
 class Derived_by_private : private Base { } ; // private派生
 </pre>
 
@@ -21453,9 +21453,9 @@ struct Derived : Base
     ~Derived() { } // デストラクターはvirtual関数
 } ;
 
-struct Abstruct_base
+struct Abstract_base
 {
-    virtual ~Abstruct_base() = 0 ; // デストラクターはピュアvirtual関数
+    virtual ~Abstract_base() = 0 ; // デストラクターはピュアvirtual関数
 } ;
 </pre>
 
@@ -25159,7 +25159,7 @@ struct X
 </p>
 
 <p>
-確保関数には、効果(effect)と必須の挙動(requied behavior)とデフォルトの挙動(default behavior)が規定されている。解放関数には、効果ととデフォルトの挙動が規定されている。効果とは、その関数がどのようなことに使われるのかという規定である。必須の挙動とは、たとえユーザー定義の関数であっても必ず守らなければならない挙動のことである。デフォルトの挙動とは、関数がユーザー定義されていない場合、実装によって用意される定義の挙動である。
+確保関数には、効果(effect)と必須の挙動(required behavior)とデフォルトの挙動(default behavior)が規定されている。解放関数には、効果ととデフォルトの挙動が規定されている。効果とは、その関数がどのようなことに使われるのかという規定である。必須の挙動とは、たとえユーザー定義の関数であっても必ず守らなければならない挙動のことである。デフォルトの挙動とは、関数がユーザー定義されていない場合、実装によって用意される定義の挙動である。
 </p>
 
 <p>
@@ -25396,7 +25396,7 @@ void * operator new[]( std::size_t size, const std::nothrow_t &amp; ) noexcept ;
 <dt>効果</dt>
 <dd>
 <p>
-この確保関数は、nothorow版のnew式から呼ばれる。エラー報告として、std::bac_allocをthrowする代わりに、nullポインターを返す。
+この確保関数は、nothrow版のnew式から呼ばれる。エラー報告として、std::bac_allocをthrowする代わりに、nullポインターを返す。
 </p>
 </dd>
 
@@ -26198,7 +26198,7 @@ struct X
 </pre>
 
 <p>
-デフォルトテンプレート実引数が、friend関数テンプレート宣言に指定された場合、そのfriened関数テンプレート宣言は、定義でなければならない。
+デフォルトテンプレート実引数が、friend関数テンプレート宣言に指定された場合、そのfriend関数テンプレート宣言は、定義でなければならない。
 </p>
 
 <pre>
@@ -27035,7 +27035,7 @@ struct Outer
 </p>
 
 <pre>
-sturct X
+struct X
 {
     template &lt; typename ... pack &gt;
     X( pack ... ) { }
@@ -28340,7 +28340,7 @@ struct X&lt; T, T, T &gt; { } ;
 
 <pre>
 // #1
-template &lt; typenmame T1, typename T2 &gt;
+template &lt; typename T1, typename T2 &gt;
 void f( X&lt; T1, T1, T2 &gt; ) ;
 
 // #2
@@ -31077,7 +31077,7 @@ int main()
 </pre>
 
 <p>
-一般に、デストラクターを例外によって抜け出すようなコードは書くべきではない。デストラクターはスタックアンワインディングのために呼ばれるかもしれないからだ。スタックアンワインディング中かどうかを調べる、std::uncaught_excpetionのような標準ライブラリもあるにはあるが、スタックアンワインディング中かどうかを調べる必要は、通常はない。
+一般に、デストラクターを例外によって抜け出すようなコードは書くべきではない。デストラクターはスタックアンワインディングのために呼ばれるかもしれないからだ。スタックアンワインディング中かどうかを調べる、std::uncaught_exceptionのような標準ライブラリもあるにはあるが、スタックアンワインディング中かどうかを調べる必要は、通常はない。
 </p>
 
 <p>
@@ -31809,7 +31809,7 @@ void f4() noexcept( false ) ; // 例外を許可
 </pre>
 
 <p>
-noxcept(定数式)は、コンパイル時の条件に従って、関数の例外指定を変えることに使える。
+noexcept(定数式)は、コンパイル時の条件に従って、関数の例外指定を変えることに使える。
 </p>
 
 <pre>
