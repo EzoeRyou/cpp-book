@@ -12080,9 +12080,7 @@ decltype(c) t2 ;
 decltype(c.value) t3 ;
 </pre>
 
-<p class="editorial-note">
-TODO: core issue 1212. Non-function-call xvalues and decltypeがFDISに可決された際に変更すること。
-</p>
+
 <p>
 もし、eが関数呼び出しかオーバーロード演算子の呼び出しであれば、decltypeの型は、関数の戻り値の型になる。この際、括弧式は無視される。eという名前が見つからない場合や、eの名前がオーバーロード関数のセットであった場合、エラーとなる。
 </p>
@@ -12109,9 +12107,19 @@ void f(short) ;
 decltype(f) * ptr ;
 </pre>
 
+<p>
+もし、eがxvalueであれば、eの型をTとした場合、decltype(e)の型は、T &amp;&amp;となる。
+</p>
+
+<pre>
+int x ;
+// typeの型はint &amp;&amp;
+using type = decltype( static_cast&lt; int &amp;&amp;>(x) ) ;
+</pre>
+
 
 <p>
-もし、eがlvalueであれば、eの型をTとした場合、decltypeの型は、T &amp;となる。
+もし、eがlvalueであれば、eの型をTとした場合、decltype(e)の型は、T &amp;となる。
 </p>
 
 <pre>
