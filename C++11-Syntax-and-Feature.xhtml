@@ -4267,7 +4267,7 @@ void call ( Func func )
 int main()
 {
     std::string str = "hello" ;
-    // main関数のローカル変数xを、ラムダ式の中で使う
+    // main関数のローカル変数strを、ラムダ式の中で使う
     auto f = [=]{ std::cout &lt;&lt; str &lt;&lt; std::endl ; } ;
     f() ;
     // もちろん、他の関数に渡せる。
