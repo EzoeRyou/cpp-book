@@ -12114,7 +12114,7 @@ decltype(f) * ptr ;
 <pre>
 int x ;
 // typeの型はint &amp;&amp;
-using type = decltype( static_cast&lt; int &amp;&amp;>(x) ) ;
+using type = decltype( static_cast&lt; int &amp;&amp; &gt;(x) ) ;
 </pre>
 
 
