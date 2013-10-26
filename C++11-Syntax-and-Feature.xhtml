@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE html >
 <html xmlns="http://www.w3.org/1999/xhtml" >
 
@@ -11456,7 +11456,7 @@ usingディレクティブ
 
 <li>
 <p>
-非staticデータメンバーに指定荒れた初期化句は定数式であること
+非staticデータメンバーに指定された初期化句は定数式であること
 </p>
 
 <pre>
@@ -11510,7 +11510,7 @@ constexpr int f( bool b )
     return b ? throw 0 : 0 ;
 }
 
-// エラー、絶対に定数式に鳴らない。
+// エラー、絶対に定数式にならない。
 constexpr int g( )
 {
     throw ;
