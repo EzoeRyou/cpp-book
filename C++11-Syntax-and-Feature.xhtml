@@ -8271,7 +8271,7 @@ void f( int a, int b )
 </p>
 
 <p>
-二つのポインター、pとqが、同じオブジェクトか関数を指している場合、p&lt;=qとp&gt;=qhはtrueとなりp&lt;qとp&gt;qはfalseとなる。
+同じ型の二つのポインター、pとqが、同じオブジェクトか関数を指している場合、もしくは、配列の最後の要素のひとつ後の要素を指している場合、もしくは、両方ともnullの場合は、p&lt;=qとp&gt;=qhはtrueとなり、p&lt;qとp&gt;qはfalseとなる。
 </p>
 
 <pre>
@@ -8290,7 +8290,34 @@ int main()
 </pre>
 
 <p>
-二つのポインター、pとqが、同じ配列の要素を指している場合、添字の大きい要素の方が、より大きいと評価される。
+同じ型の二つのポインター、pとqが、異なるオブジェクトを差しており、そのオブジェクトは同じオブジェクトのメンバーではなく、また同じ配列内の要素ではなく、異なる関数でもなく、あるいは、どちらか片方の値のみがnullの場合、p&lt;q, p&gt;q, p&lt;=q, p&gt;=qの結果は、未規定である。
+</p>
+
+<pre>
+int main()
+{
+    int object1 ;
+    int object2 ;
+
+    int * p = &amp;object1 ;
+    int * q = &amp;object2 ;
+
+    p &lt;= q ; // 結果は未規定
+    p &gt;= q ; // 結果は未規定
+
+    p &lt; q ; // 結果は未規定
+    p &gt; q ; // 結果は未規定
+
+    p &lt; nullptr ; // 結果は未規定
+}
+</pre>
+
+
+
+
+
+<p>
+同じ型の二つのポインター、pとqが、同じ配列の要素を指している場合、添字の大きい要素の方が、より大きいと評価される。
 </p>
 
 <pre>
@@ -8306,24 +8333,52 @@ int main()
 
     p &lt;= q ; // true
     p &gt;= q ; // false
-}
+
 </pre>
 
 <p>
-もし、ポインターが配列の範囲外を指していたとしても、添字の大きい方が、より大きいと評価される。
+これと同様に、pとqが指しているものが、同じ型の同じクラスのオブジェクトのサブオブジェクトである場合は、同じアクセスコントロール化にある場合、後に宣言されたメンバーの方が、ポインター同士の比較演算では、大きいと評価される。
 </p>
 
 <pre>
+struct S
+{
+// 同じアクセスコントロール下
+    int a ;
+    int b ; // bが後に宣言されている
+} ;
+
 int main()
 {
-    int array[2] ;
+    S object ;
+    // 同じオブジェクトのサブオブジェクト
+    int * p = &amp;object.a ;
+    int * q = &amp;object.b ;
 
-    int * p = &amp;array[0] ;
-    int * q = &amp;array[10] ; // 配列の範囲外
-
-    p &lt; q ; // 必ずtrue
-}
+    p &lt; q ; // true
+    p &gt; q ; // false
+} ;
 </pre>
+
+<p>
+これと似ているが、ただしクラスのメンバーのアクセスコントロールが異なる場合、結果は未規定である。
+</p>
+
+<pre>
+struct S
+{
+public :
+    int a ;
+private :
+    int b ;
+
+    void f()
+    {
+        &amp;a &lt; &amp;b ; // 結果は未規定
+    }
+} ;
+</pre>
+
 
 
 <p>
@@ -8354,53 +8409,21 @@ int main()
 </pre>
 
 <p>
-二つのポインター、pとqが、同じオブジェクトの非staticで同じアクセス指定のデータメンバーを指している場合、後に宣言されているデータメンバーを指しているポインターの方が、より大きいと評価される。
+二つのポインターが、同じ配列内の要素を指している場合、添字の大きい要素を指すポインターのが、大きいと評価される。また、これはどちらか片方のポインターが、配列の範囲を超えていても、評価できる。
 </p>
 
 <pre>
-struct Object
-{
-    int x ;
-    int y ;
-} ;
-
 int main()
 {
-    Object object ;
-    // 同じオブジェクトで、同じアクセス指定のデータメンバーを指す
-    int * p = &amp;object.x ;
-    int * q = &amp;object.y ;
+    int a[2] ;
+    int * p1 = &amp;a[0] ;
+    int * p2 = &amp;a[1] ;
 
-    // qはpより大きい
+    p1 &lt; p2 ; // true
 
-    p &lt; q ; // true
-    p &gt; q ; // false
+    int * p3 = p2 + 1 ; // p3は配列の範囲外を指す
 
-    p &lt;= q ; // true
-    p &gt;= q ; // false
-}
-</pre>
-
-<p>
-アクセス指定が違うメンバーのポインターを比較した際の挙動は、未規定である。
-</p>
-
-<pre>
-struct Object
-{
-private :
-    int x ;
-public :
-    int y ;
-} ;
-
-int main()
-{
-    Object object ;
-    int * p = &amp;object.x ;
-    int * q = &amp;object.y ;
-
-    p &lt; q ; // 結果は未規定
+    p1 &lt; p3 ; // OK、結果はtrue
 }
 </pre>
 
