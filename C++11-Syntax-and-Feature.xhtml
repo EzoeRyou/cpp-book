@@ -4610,14 +4610,14 @@ public :
         : a(a), b(b) { }
 
     // コピーコンストラクターが暗黙的に定義される
-    Closure( Closure &amp; ) = default ;
+    Closure( Closure const &amp; ) = default ;
     // ムーブコンストラクターが暗黙的に定義される可能性がある
     Closure( Closure &amp;&amp; ) = default ;
 
     // デフォルトコンストラクターはdelete定義される
     Closure() = delete ;
     // コピー代入演算子はdelete定義される
-    Closure &amp; operator = ( Closure &amp; ) = delete ;
+    Closure &amp; operator = ( Closure const &amp; ) = delete ;
     
     
 
