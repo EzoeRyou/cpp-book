@@ -5371,7 +5371,7 @@ int main()
 <h1 id="expr.pseudo"><a href="#expr.pseudo">疑似デストラクター呼び出し（Pseudo destructor call）</a></h1>
 
 <p>
-擬似デストラクター呼び出しとは、デストラクターを明示的に呼び出すことができる式である。使い方は、operator .、operator -&gt;に続けて、疑似デストラクター名を書き、さらに関数呼び出しのoperator ()を書く。式の結果はvoidになる。
+疑似デストラクター呼び出しとは、デストラクターを明示的に呼び出すことができる式である。使い方は、operator .、operator -&gt;に続けて、疑似デストラクター名を書き、さらに関数呼び出しのoperator ()を書く。式の結果はvoidになる。
 </p>
 
 <pre>
@@ -5381,9 +5381,9 @@ struct C {} ;
 int main()
 {
     C c ;
-    c.~C() ; // 擬似デストラクター呼び出し
+    c.~C() ; // 疑似デストラクター呼び出し
     C * ptr = &amp;c
-    ptr->~C() ;// 擬似デストラクター呼び出し
+    ptr->~C() ;// 疑似デストラクター呼び出し
 }
 </pre>
 
@@ -7460,7 +7460,7 @@ void f()
     // これでは、operator delete( void * )が呼び出される
     delete ptr ;
 
-    // 擬似デストラクター呼び出し
+    // 疑似デストラクター呼び出し
     ptr-&gt;~C() ;
     // operator deleteの明示的な呼び出し
     operator delete( ptr, 0 ) ;
