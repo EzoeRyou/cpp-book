@@ -11745,13 +11745,17 @@ int main()
 </pre>
 
 <p>
-識別子に対するキーワードは、すでに行われた宣言と同じでなければならない。
+識別子に対するキーワードは、enumにはenumキーワードを、unionにはunionキーワードを、クラスにはstructキーワードかclassキーワードを、すでに行われた宣言と一致して使わなければならない。
 </p>
 
 <pre>
 class Name { } ;
-struct Name a ; // エラー、Nameはclassキーワードで宣言されている。
+struct Name a ; // OK、structキーワードでもよい
+
+enum Name b ; // エラー、キーワードが不一致
+union Name c ; // エラー、キーワードが不一致
 </pre>
+
 </article>
 
 <article>
