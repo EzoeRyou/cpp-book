@@ -12108,6 +12108,8 @@ decltype指定子の型は、以下のような順序で、条件の合うとこ
 decltype(e)に対して、
 </p>
 
+<ol>
+<li>
 <p>
 もし、eが括弧式で囲まれていない、名前かクラスのメンバーアクセスであれば、decltypeの型は、名前eの型になる。
 </p>
@@ -12151,7 +12153,9 @@ void f(short) ;
 
 decltype(f) * ptr ;
 </pre>
+</li>
 
+<li>
 <p>
 もし、eがxvalueであれば、eの型をTとした場合、decltype(e)の型は、T &amp;&amp;となる。
 </p>
@@ -12161,7 +12165,9 @@ int x ;
 // typeの型はint &amp;&amp;
 using type = decltype( static_cast&lt; int &amp;&amp; &gt;(x) ) ;
 </pre>
+</li>
 
+<li>
 
 <p>
 もし、eがlvalueであれば、eの型をTとした場合、decltype(e)の型は、T &amp;となる。
@@ -12174,6 +12180,14 @@ using type = decltype ( (x) ) ;
 </pre>
 
 <p>
+条件が上から優先されるということに注意。eが括弧で囲まれていない場合は、すでに1.の条件に当てはまるので、この条件には当てはまらない。この条件はeが括弧で囲まれている場合である。
+</p>
+
+</li>
+
+<li>
+
+<p>
 上記以外の場合、decltypeの型は、eの型となる。
 </p>
 
@@ -12183,6 +12197,9 @@ decltype(0) t1 ;
 // delctype("hello")の型は、char const [6]
 decltype("hello") t2 = "hello" ;
 </pre>
+</li>
+
+</ol>
 
 <p>
 eがlvalueで、しかも括弧式で囲まれている場合は、リファレンス型になるということには、注意を要する。
