@@ -6844,7 +6844,7 @@ newによって生成されるオブジェクトは、<a href="#basic.stc.dynami
 <pre>
 int main()
 {
-    int * ptr new int ; // 生成
+    int * ptr = new int ; // 生成
     delete ptr ; // 破棄
 }
 </pre>
@@ -6912,7 +6912,7 @@ int main()
     // OK 
     int * ptr = new int[0] ;
     // もちろんdeleteしなければならない
-    delete ptr ;
+    delete [] ptr ;
 
     // エラー
     new int[-1] ;
