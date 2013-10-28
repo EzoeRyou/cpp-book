@@ -12219,7 +12219,7 @@ decltypeは、他の型指定子や宣言子と併用できる。
 <pre>
 int x ;
 decltype ( x ) * ptr ; // int *
-decltype ( x ) const &amp; const_ref ; // int const &amp;
+decltype ( x ) const &amp; const_ref = x ; // int const &amp;
 </pre>
 
 <p>
