@@ -25354,8 +25354,7 @@ void operator delete( void * ptr ) noexcept ;
 <dt>効果</dt>
 <dd>
 <p>
-この解放関数は、ptrの値を無効にするため、delete式から呼ばれる。ptrの値は、nullポインターか、operator new(std::size_t) もしくは operator new(std::size_t,const std::nothrow_-
-t&amp;)によって返された値で、まだoperator delete(void*)に渡していないものである。
+この解放関数は、ptrの値を無効にするため、delete式から呼ばれる。ptrの値は、nullポインターか、operator new(std::size_t) もしくは operator new(std::size_t,const std::nothrow_t&amp;)によって返された値で、まだoperator delete(void*)に渡していないものである。
 </p>
 </dd>
 
