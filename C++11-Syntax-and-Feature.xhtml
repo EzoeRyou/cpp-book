@@ -559,7 +559,7 @@ Foo * foo_pointer = new Foo ;
 </article>
 
 <article>
-<h1><a href="#intro.execution">プログラムの実行（Program execution）</a></h1>
+<h1 id="intro.execution"><a href="#intro.execution">プログラムの実行（Program execution）</a></h1>
 
 <p>
 TODO:
@@ -9757,7 +9757,7 @@ TODO: Madrid meeting後に変更する。ADL baseではなくtraits baseにな�
 </p>
 
 <article>
-<h1><a href="#stmt.ranged.basic">range-based forの基本</a></h1>
+<h1 id="stmt.ranged.basic"><a href="#stmt.ranged.basic">range-based forの基本</a></h1>
 <pre>
 for ( for-range-宣言 : for-range-初期化子 ) 文
 </pre>
@@ -10978,7 +10978,7 @@ namespace
 </article>
 
 <article>
-<h1><a href="#dcl.stc.extern">extern指定子</a></h1>
+<h1 id="dcl.stc.extern"><a href="#dcl.stc.extern">extern指定子</a></h1>
 <p>
 extern指定子には、名前のリンケージを外部リンケージにするという機能と、名前の定義をしないという機能がある。extern指定子は、変数と関数に適用できる。ただし、クラスのメンバーと関数の仮引数には指定できない。
 </p>
@@ -13551,7 +13551,7 @@ int (*)(void)       // 型名
 </article>
 
 <article>
-<h1><a href="#dcl.ambig.res">曖昧解決（Ambiguity resolution）</a></h1>
+<h1 id="dcl.ambig.res"><a href="#dcl.ambig.res">曖昧解決（Ambiguity resolution）</a></h1>
 
 <p>
 宣言文は、文法上、曖昧になる場合がある。これは、通常気にする必要はない。ただし、まれにこの曖昧性に引っかかり、不可解なコンパイルエラーを引き起こす可能性がある。
@@ -13966,7 +13966,7 @@ int S:: * p3 = &amp;S::value ; // エラー
 </article>
 
 <article>
-<h1><a href="#dcl.array">配列（Arrays）</a></h1>
+<h1 id="dcl.array"><a href="#dcl.array">配列（Arrays）</a></h1>
 
 <p>
 宣言子が以下のように記述されている場合、配列を意味する。
@@ -19984,7 +19984,7 @@ friend宣言とテンプレートの組み合わせについては、<a href="#t
 </article>
 
 <article>
-<h1><a href="#class.protected">protectedメンバーアクセス（Protected member access）</a></h1>
+<h1 id="class.protected"><a href="#class.protected">protectedメンバーアクセス（Protected member access）</a></h1>
 
 <p class="editorial-note">
 TODO:保留
@@ -23451,7 +23451,7 @@ int main()
 </p>
 
 <article>
-<h1><a href="over.match.funcs">候補関数(Candidate functions)</a></h1>
+<h1 id="over.match.funcs"><a href="#over.match.funcs">候補関数(Candidate functions)</a></h1>
 
 <p>
 候補関数(Candidate functions)は、正確に言えば、候補関数群とでも訳されるべきであろう。候補関数とは、その名前の通り、オーバーロード解決の際に呼び出しの優先順位を考慮される関数のことである。候補関数に選ばれなければ、呼び出されることはない。ある名前に対してオーバーロード解決が必要な場合に、まず最初に行われるのが、候補関数の列挙である。候補関数は、通常通りに名前探索をおこなって見つけた関数すべてである。これには、実際には呼び出すことのできない関数も含む。オーバーロード解決の際に考慮するのは、この候補関数だけである。その他の関数は考慮しない。
