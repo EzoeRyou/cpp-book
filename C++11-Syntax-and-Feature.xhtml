@@ -3162,35 +3162,387 @@ namespace
 <pre>
 void f()
 {
-    void g() ; // リンケージを持つ
+    extern void g() ; // リンケージを持つ
     extern int global ; // リンケージを持つ
 
     g() ; // OK
     global = 123 ; // OK
 }
 
+// 別の翻訳単位
 void g() { }
 int global ;
 </pre>
 
 <p>
+もし、ブロックスコープの外の直前の名前空間スコープで、同じ名前、同じエンティティでリンケージだけが違う前方宣言がなされていた場合、ブロックスコープのリンケージ指定は無視され、前方宣言のリンケージが使われる。
+</p>
 
+<pre>
+// グローバル名前空間
+static void f();            // 内部リンケージ
+static int i = 0;           // 内部リンケージ
+
+void g() {
+
+    extern void f();        // 内部リンケージ
+    int i;                  // リンケージなし
+    {
+        extern void f();    // 内部リンケージ
+        extern int i;       // 外部リンケージ
+    }
+</pre>
+
+<p>
+この例では、名前iのオブジェクトは3つ存在する、それぞれ、内部リンケージ、リンケージなし、外部リンケージをもつ、別のオブジェクトを指し示している。
+</p>
+
+<p>
+もし、ブロックスコープの名前と、前方宣言された名前空間スコープの名前で、名前に適合するエンティティが複数あった場合、エラーとなる。そのような重複がない場合、ブロックスコープのextern指定した名前は、外部リンケージを持つ。
+</p>
+
+<p>
+ブロックスコープで宣言された名前でリンケージを持つものが、すでに前方宣言されていない場合は、ブロックスコープを包む直前の名前空間のメンバーとなる。ただし、名前空間スコープのメンバーの名前として現れることはない。
+</p>
+
+<pre>
+namespace ns
+{
+    void f()
+    {
+        extern void h() ; // 名前空間nsのメンバーとなる
+        h() ; // OK
+    }
+
+    void g()
+    {
+        h() ; // エラー、名前hは宣言されていない
+    }
+
+    vopid h() { } // ns::hの宣言と定義
+}
+
+// これはns::hとは関係がない、別のエンティティ
+void h() { }
+</pre>
+
+<p>
+ここまでの条件に当てはまらなかった名前は、リンケージを持たない。特に、ブロックスコープで宣言された名前のほとんどは、すでに上げた条件にあてはまらない限り、リンケージを持たない。
+</p>
+
+<p>
+型のうち、リンケージを持つものは以下の通り
+</p>
+
+<ul>
+<li>
+名前を持つクラス型、もしくはenum型、無typedef宣言内で定義された無名クラス型や無名enum型だが、typedef名を持つもので、その名前がリンケージを持つもの
+</li>
+
+<li>
+リンケージを持つクラスの中の、無名クラスと無名enumのメンバー
+</li>
+
+<li>
+<p>
+クラステンプレートの特殊化
+</p>
+
+<pre>
+template &lt; typename T &gt;
+void f() { }
+
+void g()
+{
+    f&lt;int&gt;() ;
+}
+</pre>
+
+<p>
+この例では、f&lt;int&gt;のみがリンケージを持つ。f&lt;short&gt;やf&lt;double&gt;のような型は、特殊化されていないので、リンケージを持たない
+</p>
+</li>
+
+<li>
+基本型
+</li>
+
+<li>
+<p>
+クラスとenum以外の複合型で、リンケージを持つ型が複合しているもの。
+</p>
+
+<p>
+たとえば、int *やint **と言った型リンケージを持つ
+</p>
+</li>
+
+<li>
+リンケージをもつ型がCV修飾された型
+</li>
+</ul>
+
+<p>
+リンケージを持たない型は、リンケージを持つ関数やクラスで使うことはできない。ただし、以下の場合は使うことができる。
+</p>
+
+<ul>
+<li>
+エンティティがC言語リンケージをもつ場合
+</li>
+<li>
+エンティティが無名名前空間で宣言されている場合
+</li>
+
+<li>
+エンティティがODRの文脈で使われていない場合、もしくは、同じ翻訳単位で宣言されている場合
+</li>
+</ul>
+
+<p>
+異なるスコープで宣言された同一の二つの名前は、以下の条件をすべて満たした場合、同じ変数、関数、型、enum、テンプレート、名前空間を指し示す。
+</p>
+
+<ul>
+<li>
+名前は両方とも、ともに外部リンケージを持つか、ともに内部リンケージを持ち、同じ翻訳単位で宣言されている。
+</li>
+
+<li>
+名前は両方とも、同じ名前空間のメンバーか、派生によらない同じクラスのメンバーを指し示している
+</li>
+
+<li>
+名前が両方とも関数を指し示す場合は、関数の仮引数の型リストが同一であること
+</li>
+
+<li>
+名前が両方とも関数テンプレートを指し示す場合は、シグネチャが同じであること
+</li>
+</ul>
+
+<p>
+
+</p>
+</article>
+
+<p>
+NOTE:ここから先のBasic Conceptsは、最新のC++14ドラフト、N3797を参照している。ここから先はC++11とC++14の差が激しく、最新のドラフトを参考することにした。
+</p>
+
+<article>
+<h1 id="basic.start"><a href="#basic.start">プログラムの開始と終了（Start and termination）</a></h1>
+
+
+<article>
+<h1 id="basic.start.main"><a href="#basic.start.main">main関数（Main function）</a></h1>
+
+
+<p>
+プログラム中にある、mainという名前のひとつのグローバル関数から、プログラムは開始する。freestanding環境でmainの定義を必要とするかどうかは実装依存である。ホスト環境と違い、freestanding環境では、開始と終了も実装依存となる。
+</p>
+
+<p>
+main関数は特別な扱いを受ける。C++の実装は、mainを予め定義してはならない。main関数はオーバーロードできない。戻り値の型はintであるが、main関数自体の型は実装依存となる。
+</p>
+
+<p>
+規格では、C++の実装は、以下の二つの形のmain関数を受け付けるように規定されている。
+</p>
+
+<ul>
+<li>
+<p>
+関数で、仮引数が()で、intを返すもの
+</p>
+
+<pre>
+int main() ;
+auto main() -&gt; int ;
+</pre>
+</li>
+
+<li>
+<p>
+関数で、仮引数が( int, charへのポインターへのポインター )で、intを返すもの
+</p>
+
+<pre>
+int main( int, char ** ) ;
+// 仮引数に配列型を書くと、ポインター型になる。
+int main( int, char *[] ) ;
+</pre>
+</li>
+</ul>
+
+<p>
+2つ目の形では、慣習的に、関数の1つ目の仮引数はargcと呼ばれていて、2つ目の仮引数はargvと呼ばれている。argcはプログラムの実行される環境で、プログラムに渡された引数の数を表す。argcがゼロでなければ、引数はargv[0]から、argv[argc-1]まで、null終端されたマルチバイト文字列の先頭文字へのポインターを指す。argv[0]は、プログラムが実行された時のプログラムの名前か、あるいは""となる。argcの値が負数になることはない。argv[argc]の値は0となる。
+</p>
+
+<pre>
+#include &lt;iostream&gt;
+
+int main( int argc, char ** argv )
+{
+    std::cout &lt;&lt; "Number of arguments: " &lt;&lt; argc &lt;&lt; std::endl ;
+    std::cout &lt;&lt; "program name: " &lt;&lt; argv[0] &lt;&lt; std::endl ;
+
+    // 残りの引数
+    for ( char * ptr = argv[1] ; ptr != 0 ; ++ptr )
+    {
+        std::cout &lt;&lt; ptr &lt;&lt; std::endl ;
+    }
+}
+</pre>
+
+<p>
+main関数は、プログラム中で使われてはならない。「使う」というのは、呼び出すことはもちろん、アドレスやリファレンスを取ることも含まれる。
+</p>
+
+<pre>
+auto ptr = &amp;main ; // エラー
+</pre>
+
+<p>
+mainのリンケージは実装依存である。mainをdelete定義したり、inline, static, constexprなどと宣言することはエラーとなる。
+</p>
+
+<p>
+mainという名前は、これ以外には予約されていない。つまり、クラス名やenum名や、クラスのメンバーをmainと名付けることは問題ないし、グローバル名前空間以外の名前空間でmainという名前を使うことも問題はない。
+</p>
+
+<p>
+例えば、以下のコードは完全に合法なコードである。
+</p>
+
+<pre>
+class main { } ;
+namespace ns
+{
+    int main() { return 0 ; }
+}
+
+int main( ) { }
+</pre>
+
+<p>
+3つのmainという名前は、それぞれ別のエンティティを指す。
+</p>
+
+<p>
+std::exitなどのような方法を使い、ブロックから抜け出さずにプログラムを終了させた場合、自動ストレージ上のオブジェクトは破棄されない。もし、std::exitがstaticやスレッドストレージ上のオブジェクトを破棄中に呼ばれたならば、プログラムの挙動は未定義である。
+</p>
+
+<p>
+main関数の中のreturn文んは、プログラムからの離脱の効果があり、自動ストレージ上のオブジェクトは破棄され、return文のオペランドの値が、std::exitへの実引数として渡される。もし、main関数の最後の到達しても、return文がない場合は、以下の文を実行したものと同等の効果になる。
+</p>
+
+<pre>
+return 0 ;
+</pre>
+
+<p>
+これはmain関数だけの特別な仕様である。
 </p>
 
 </article>
 
 <article>
-<h1 id="basic.start"><a href="#basic.start">プログラムの開始と終了（Start and termination）</a></h1>
-
-<article>
-<h1 id="basic.start.main"><a href="#basic.start.main">main関数（Main function）</a></h1>
-</article>
-
-<article>
 <h1 id="basic.start.init"><a href="#basic.start.init">非ローカル変数の初期化（Initialization of non-local objects）</a></h1>
+
+<p>
+非ローカル変数にはに種類あるstaticストレージ上の変数と、スレッドストレージ上の変数である。staticストレージ上の非ローカル関数は、プログラムの開始にともなって初期化される。スレッドストレージ上の非ローカル関数は、スレッドの実行にともなって初期化される。初期化は以下の手順で行われる。
+</p>
+
+<p>
+staticストレージ上とスレッドストレージ上の変数は、他の初期化に先んじて、必ずゼロ初期化される。
+</p>
+
+<p>
+変数に定数初期化子(constant initializer)がある場合、定数初期化(constant initialization)が行える場合は、行われる。定数初期化子とは、初期化子が定数式となる式の場合である。
+</p>
+
+<p>
+ゼロ初期化と定数初期化をまとめて、静的初期化(static initialization)と呼ぶ。これ以外の初期化はすべて、動的初期化(dynamic initialization)である。静的初期化は、動的初期化の前に行われる。
+</p>
+
+<p>
+staticストレージ上の非ローカル変数の動的初期化の順序があるものと、順序のないものがある。
+</p>
+
+<p>
+明示的に特殊化されたクラステンプレートのstaticデータメンバーの初期化は、順序がある。暗黙、明示的に実体化された特殊化のstaticデータメンバーの初期化は、順序がない。
+</p>
+
+<pre>
+template &lt; typename T &gt;
+struct S
+{
+    static int data ;
+} ;
+
+// 実行時関数
+int init()
+{
+    static int count = 0 ;
+    return count++ ;
+}
+
+// 動的初期化される
+template &lt; typename T &gt;
+int S&lt;T&gt;::data = init() ;
+
+// 明示的実体化
+extern template struct S&lt; int &gt; ;
+extern template struct S&lt; short &gt; ;
+
+// 明示的特殊化
+template &lt; &gt;
+int S&lt;double&gt;::data = init() ;
+template &lt; &gt;
+int S&lt;float&gt;::data = init() ;
+
+int main( )
+{
+    S&lt;long&gt; s1 ;
+    S&lt;long long int&gt; s2 ;
+}
+</pre>
+
+<p>
+クラステンプレートSのshort, int, long, long long intに対する特殊化は、暗黙や明示的に実体化されているので、staticデータメンバーdataの初期化の順序はない。そのため、値がどうなるかは、規格上定めることができない。
+</p>
+
+<p>
+一方、floatとdoubleについての特殊化は、明示的に特殊化されているので、順序が有る、doubleの特殊化がfloatの特殊化より先んじることが保証されている。
+</p>
+
+<p>
+この他のstaticストレージ上の非ローカル変数は順序がある。
+</p>
+
+<p>
+順序がある変数は、ひとつの翻訳単位の中では、定義されている順番通りに初期化される。
+</p>
+
+<pre>
+int init()
+{
+    static int count = 0 ;
+    return count++ ;
+}
+
+int x = init() ; // 0
+int y = init() ; // 1
+int z = init() ; // 2
+</pre>
+
+<p>
+</p>
+
 </article>
 
-<article>
+<particle>
 <h1 id="basic.start.term"><a href="#basic.start.term">終了（Termination）</a></h1>
 </article>
 
