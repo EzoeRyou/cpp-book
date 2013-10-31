@@ -3538,25 +3538,139 @@ int z = init() ; // 2
 </pre>
 
 <p>
+この他、規格では、挙動が変わらない場合、実装は動的初期化を静的初期化にしてもよいであるとか、main関数に処理が移った時点で初期化が完了している必要はないなどということを規定している。これは実装の選択や最適化を許すためのもので、コードから見える挙動は変わらない。
 </p>
 
 </article>
 
 <particle>
 <h1 id="basic.start.term"><a href="#basic.start.term">終了（Termination）</a></h1>
-</article>
 
-</article>
-
-
-
-
-
-
-
-<p class="editorial-note">
-TODO:これ以前、未執筆。
+<p>
+main関数からreturnするか、std::exitを呼び出した場合、staticストレージ上の初期化されたオブジェクトのデストラクターが呼び出される。スレッドの初期関数からreturnするか、std::exitを呼び出した場合、スレッドストレージ上の初期化されたオブジェクトのデストラクターが呼び出される。
 </p>
+
+<p>
+終了時のオブジェクトの破棄中に、すでに破棄されたオブジェクトを参照した場合、挙動は未定義である。
+</p>
+</article>
+
+
+
+</article>
+
+
+
+
+<article>
+<h1 id="basic.stc"><a href="#basic.stc">ストレージ(storage duration)</a></h1>
+
+<p>
+TODO:ここの説明は、優先度が低いため軽く済ませている。
+</p>
+
+<p>
+規格上、ストレージという用語は正しくなく、ストレージの有効期間(storage duration)という用語が正しいのだが、本書では多くの箇所で、簡単にするため、単にストレージという言葉を使っている。
+</p>
+
+<p>
+ストレージの有効期間には、様々なものがある。その具体的な実装方法は規定されていない。規格はC++の実装の選択肢をなるべく制限しないように書かれているので、細部は規定していない。たとえば、規格はC++のインタープリター実装を禁止していない。ここでは、よくある古典的な実装の一例が、各ストレージをどのように実装しているかを、簡単に記述するが、規格の規定ではないことに注意。
+</p>
+
+<p>
+静的ストレージとも呼ばれるstaicストレージの有効期間(static storage duration)は、staticキーワードをつけて宣言したローカル変数やデータメンバー、thread_localをつけずに宣言した名前空間スコープの変数などが該当する。
+</p>
+
+<p>
+既存のよくあるC++の実装では、静的ストレージは、プログラムのコードなどと一緒にバイナリ上に配置され、そのままメモリ上に読み込まれている。
+</p>
+
+<p>
+スレッドストレージの有効期間(thread stroage duration)は、thread_localキーワードをつけて宣言した変数が該当する。この変数は、スレッドごとに異なるオブジェクトが割り当てられる。スレッドの解説は本書の範疇ではないので、詳しくは説明しない。
+</p>
+
+<p>
+既存のよくあるC++の実装では、スレッドストレージは、TLS（Thread Local Storage）などと呼ばれる、実装依存のスレッドごとに割り当てられた何らかのストレージ、あるいはストレージを指し示すハンドルなどから確保している。
+</p>
+
+<p>
+自動ストレージの有効期間(automatic storage duration)は、ブロックスコープで明示的にregisterつきで宣言された変数、あるいは、staticやexternつきで宣言されていない変数が該当する。thread_localつきの変数宣言は暗黙的にstaticでもあるので、該当しない。
+</p>
+
+<p>
+既存のよくあるC++の実装では、自動ストレージの有効期間は、スタックと呼ばれる特別なメモリから割り当てられる。
+</p>
+
+<p>
+動的ストレージの有効期間(dynamic storage duration)を持つストレージ上のオブジェクトは、new式によって動的に作成され、delete式によって破棄される。
+</p>
+
+<p>
+C++実装は、オブジェクトを構築する動的ストレージを確保するためのグローバルな確保関数(allocation function)と、動的ストレージを解放するための解放関数(deallocation function)を提供している。
+</p>
+
+<p>
+確保関数は、operator newとoperator new[]で、解放関数はoperator deleteとoperator delete[]となる。
+</p>
+
+<p>
+C++の標準ライブラリは、デフォルトの確保関数と解放関数の定義を提供している。これはオーバーロードして、独自の定義を与えることもできる。
+</p>
+
+<p>
+確保関数、解放関数のシグネチャは、以下の通り。
+</p>
+
+<pre>
+void* operator new(std::size_t);
+void* operator new[](std::size_t);
+void operator delete(void*);
+void operator delete[](void*);
+void operator delete(void*, std::size_t) noexcept;
+void operator delete[](void*, std::size_t) noexcept;
+</pre>
+
+
+<p>
+最後の二つの解放関数は、二番目の仮引数に、確保したストレージのサイズが渡される
+</p>
+
+<article>
+<h1 id="basic.stc.dynamic.allocation"><a href="#basic.stc.dynamic.allocation">確保関数(allocation function)</a></h1>
+<p>
+TODO: 優先度が低い
+</p>
+</article>
+
+<article>
+<h1 id="basic.stc.dynamic.deallocation"><a href="#basic.stc.dynamic.deallocation"></a></h1>
+<p>
+TODO: 優先度が低い
+</p>
+</article>
+
+<article>
+<h1 id="basic.stc.dynamic.safety"><a href="#basic.stc.dynamic.safety"></a></h1>
+
+<p>
+TODO: 優先度が極めて低い
+</p>
+</article>
+
+<article>
+<h1 id="basic.stc.inherit"><a href="#basic.stc.inherit">サブオブジェクトの有効期間</a></h1>
+
+<p>
+サブオブジェクトのストレージの有効期間は、その完全なオブジェクトの有効期間に同じ。
+</p>
+</article>
+
+
+</article>
+
+<article>
+
+</article>
 
 </article>
 
