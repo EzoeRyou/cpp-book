@@ -3543,7 +3543,7 @@ int z = init() ; // 2
 
 </article>
 
-<particle>
+<article>
 <h1 id="basic.start.term"><a href="#basic.start.term">終了（Termination）</a></h1>
 
 <p>
@@ -3643,14 +3643,14 @@ TODO: 優先度が低い
 </article>
 
 <article>
-<h1 id="basic.stc.dynamic.deallocation"><a href="#basic.stc.dynamic.deallocation"></a></h1>
+<h1 id="basic.stc.dynamic.deallocation"><a href="#basic.stc.dynamic.deallocation">解放関数(deallocation function)</a></h1>
 <p>
 TODO: 優先度が低い
 </p>
 </article>
 
 <article>
-<h1 id="basic.stc.dynamic.safety"><a href="#basic.stc.dynamic.safety"></a></h1>
+<h1 id="basic.stc.dynamic.safety"><a href="#basic.stc.dynamic.safety">安全なポインター(Safely-derived pointers)</a></h1>
 
 <p>
 TODO: 優先度が極めて低い
@@ -3669,6 +3669,63 @@ TODO: 優先度が極めて低い
 </article>
 
 <article>
+<h1 id="basic.life"><a href="#basic.life">オブジェクトの寿命(Object lifetime)</a></h1>
+
+<p>
+オブジェクトの寿命(lifetime)の始まりは、オブジェクトの型のサイズとアライメントに適切に対応したストレージが確保された後、もしオブジェクトが非トリビアル初期化を持つならば、その初期化が終わった時点である。
+</p>
+
+<p>
+非トリビアル初期化(non-trivial initialization)とは、オブジェクトの型がクラスかアグリゲートで、そのメンバーがひとつでもトリビアルデフォルトコンストラクター以外で初期化されるものをいう。
+</p>
+
+<p>
+オブジェクトの寿命の終わりは、オブジェクトが非トリビアルデストラクターを持つのならば、デストラクター呼び出しを開始した時点、そうでなければ、オブジェクトの占めるストレージが解放されるか再利用された時点である。
+</p>
+
+</article>
+
+<article>
+<h1 id="basic.types"><a href="#basic.types">型(Types)</a></h1>
+
+<p>
+トリビアルにコピー可能な型のオブジェクトは、その内部表現のバイト列を、charかunsigned charの配列にコピーできる。コピーされたcharかunsigned charの配列を、再びオブジェクトにコピーしなおした場合、オブジェクトは元の値を保持する。
+</p>
+
+<pre>
+// トリビアルにコピー可能な型Tのオブジェクト
+T object ;
+// Tを表現するバイト列のサイズ
+constexpr std::size_t size = sizeof(T) ;
+// T型と同じサイズの配列
+unsigned char buffer[size] ;
+
+// 配列にコピー
+std::memcpy( buffer, &amp;object, size ) ;
+// 元のオブジェクトにコピーしなおす
+std::memcpy( &amp;object, buffer, size ) ;
+
+// objectの値は元のまま
+</pre>
+
+<p>
+トリビアルにコピー可能な型Tのオブジェクトを指し示すポインターが二つあるとして、オブジェクトは基本クラスとしてのサブオブジェクトではない場合、内部表現のバイト列をポインターを経由してコピーすると、コピーされた方はコピーした方の値になる。
+</p>
+
+<pre>
+// Tはトリビアルにコピー可能な型
+// ポインターはオブジェクトを指し示しているとする
+T * ptr1 ;
+T * ptr2 ;
+
+std::memcpy( ptr1, ptr2, sizeof(T) ) ;
+
+// ptr1の指し示すオブジェクトは、ptr2の指し示すオブジェクトと同じ値になる
+</pre>
+
+<p>
+
+</p>
 
 </article>
 
@@ -14142,9 +14199,341 @@ namespace obsolete_C_lib
 <article>
 <h1 id="dcl.attr"><a href="#dcl.attr">アトリビュート（Attributes）</a></h1>
 
-<p class="editorial-note">
-TODO:attributeは変更される動きが見られるので保留。
+<p>
+NOTE: アトリビュートの解説は、C++14となる予定の現時点での最新ドラフト、N3797を参考にしている。
 </p>
+
+<p>
+アトリビュート(attribute)は、属性とも呼ばれ、ソースコードに追加的な情報を指定するための文法である。
+</p>
+
+<p>
+アトリビュートの文法は、以下のようになる
+</p>
+
+<pre>
+[[ アトリビュートリスト ]]
+</pre>
+
+<p>
+アトリビュートは、文法上、実に様々な箇所に書くことができる。アトリビュートリストには、アトリビュート用のトークンを指定することができる。このトークンは、アトリビュートの中だけで通用する識別子であり、予約語ではない。
+</p>
+
+<p>
+アトリビュートは、特定のC++実装の独自機能を、独自の文法を使わずに表現するために追加された。また、C++規格でも、アトリビュート用の機能をいくつか定めている。
+</p>
+
+<article>
+<h1 id="dcl.align"><a href="#dcl.align">アライメント指定子(alignment specifier)</a></h1>
+
+<p>
+アライン(align)やアライメント(alignment)とは、ある型のオブジェクトを構築するストレージのアドレスに、制約を指定する機能である。
+</p>
+
+<p>
+アライメント指定子は、通常の[[ ]] のようなアトリビュートの文法を使わない。alignasというキーワードが与えられている。当初、アライメントを指定する機能は、アトリビュートの文法を使う予定だったが、アライメント指定のような基本的な機能には、独自のキーワードが与えられるべきだという合意がなされたため、独自のキーワードが与えられた。指定子と名前はついているものの、アライメント指定子が現れることができる箇所の文法は、アトリビュートの文法に基づいている。
+</p>
+
+<p>
+アライメント指定子は、変数とクラスのデータメンバーに指定できる。書ける場所は、宣言の前がわかりやすい。
+</p>
+
+<pre>
+// OK
+alignas(16) char buf[16] ;
+
+struct S
+{
+// OK
+    alignas(16) char buf[16] ;
+} ;
+</pre>
+
+<p>
+ただし、ビットフィールド、関数の仮引数、例外宣言、registerストレージクラス指定子つきで宣言された変数には指定できない
+</p>
+
+<pre>
+struct S
+{
+// エラー、ビットフィールド
+    alignas(4) unsigned int data:16 ;
+} ;
+
+// エラー、関数の仮引数
+void f( alignas(4) int x ) ;
+
+void g()
+{
+    try { }
+// エラー、例外宣言
+    catch( alignas(4) int x ) { }
+}
+</pre>
+
+<p>
+アライメント指定子は、クラスの宣言や定義に適用することもできる。書ける場所は、クラスキーの後、クラス名の前である。
+</p>
+
+<pre>
+struct alignas(16) S ;
+struct alignas(16) S { } ;
+</pre>
+
+<p>
+同様に、アライメント指定子は、enumの宣言や定義にも適用することができる。
+</p>
+
+<pre>
+enum struct alignas(16) E1 : int
+{ value } ;
+enum alignas(16) E2
+{ value } ;
+</pre>
+
+<p>
+アライメント指定子にエリプシス(...)を適用したものは、パック展開である。
+</p>
+
+<pre>
+template &lt; typename ... Types &gt;
+struct alignas( Types ... ) // パック展開
+S { } ;
+</pre>
+
+<p>
+アライメント指定子には、二種類の形がある。alignas( )の括弧の中身が、コンマで区切られた代入式という形と、コンマで区切られた型という形だ。
+</p>
+
+<pre>
+// 代入式
+alignas( 4, 8, 16 ) char b1[128] ;
+// 型
+alignas( short, int, long ) char b2[128] ;
+</pre>
+
+<p>
+アライメント指定子がalignas(代入式)の形の場合、
+</p>
+
+<ul>
+<li>
+代入式は整数定数式でなければならない
+</li>
+
+<li>
+定数式が拡張アライメントであり、実装がそのアライメントをその文脈でサポートしている場合は、宣言されたエンティティのアライメントは、指定されたアライメントになる
+</li>
+
+<li>
+定数式が拡張アライメントであり、実装がそのアライメントをその文脈でサポートしていない場合、エラーとなる
+</li>
+
+<li>
+定数式がゼロだと評価された場合、アライメント指定子の効果はなくなる
+</li>
+</ul>
+
+<p>
+これ以外の場合、エラーとなる。
+</p>
+
+<pre>
+// OK
+constexpr std::size_t f() { return 4 ; }
+alignas( f() ) char b1[128] ;
+
+// エラー
+int g() { return 4 ; }
+alignas( g() char b2[128] ;
+
+alignas( 
+
+// 実装がサポートしている場合OK
+// 実装がサポートしていなければエラー
+alignas( alignof(std::max_align_t) * 2 ) char b3[128] ;
+
+// OK、ただしアライメント指定の効果なし
+alignas( 0 ) char b4[128] ;
+</pre>
+
+<p>
+アライメント指定子が、alignas(型名)の場合、alignas( alignof(形名) )と同等の効果になる。
+</p>
+
+<pre>
+// alignas( alignof(int) )と同等
+alignas( int ) int x ;
+</pre>
+
+<p>
+ひとつのエンティティに複数のアライメントが指定された場合、最も厳格なアライメント要求になる
+</p>
+
+<pre>
+// もし、実装が16のアライメント要求をサポートしている場合
+// アライメント要求は16
+alignas( 4, 8, 16 ) char b[128] ;
+</pre>
+
+<p>
+アライメント指定子が、宣言されるエンティティのアライメント要求より緩いアライメントを指定すると、エラーとなる。
+</p>
+
+<pre>
+// Sの最低のアライメント要求は8
+struct alignas(8) S { } ;
+
+// エラー、Sの最低のアライメント要求より緩い
+alignas(4) S s ;
+</pre>
+
+<p>
+あるエンティティの定義である宣言にアライメント指定子がある場合、同じエンティティの定義ではない宣言は、同等のアライメントを指定するか、アライメント指定子なしでなければならない。
+</p>
+
+<pre>
+struct alignas(8) S { } ;
+
+struct S ; // OK
+struct alignas(8) S ; // OK
+
+
+struct alignas(4) S ;   // エラー、同等ではない
+struct alignas(16) S ;  // エラー、同等ではない
+</pre>
+
+<p>
+もし、エンティティの宣言のどれかひとつにでもアライメント指定子があった場合、そのエンティティの定義となる宣言にも、同等のアライメントを指定しなければならない
+</p>
+
+<pre>
+struct S { } ; // エラー、アライメント指定つきの宣言がある
+struct alignas(4) S ; 
+</pre>
+
+</article>
+
+<article>
+<h1 id="dcl.attr.noreturn"><a href="#dcl.attr.noreturn">noreturnアトリビュート(Noreturn attribute)</a></h1>
+
+<p>
+アトリビュートトークン、noreturnは、関数がreturnしないことを指定する。このアトリビュートは、関数宣言の宣言子idに適用できる。
+</p>
+
+<pre>
+// この関数は決してreturnしない
+[[ noreturn ]] void f()
+{
+// なぜならば、必ずthrowするからだ
+    throw 0 ;
+}
+</pre>
+
+<p>
+noreturnは、宣言中に一度しか現れてはならない。noreturnを指定する関数は、その最初に現れる宣言にこのアトリビュートを適用しなければならない。
+</p>
+
+<pre>
+void f() ; // エラー、最初の宣言だがnoreturnがない
+[[ noreturn ]] void f() ;
+</pre>
+
+<p>
+もし、ある関数が、ある翻訳単位ではnoreturnが指定され、別の翻訳単位では指定されていない場合、エラーとなる。
+</p>
+
+<p>
+noreturnを指定した関数からreturnした場合、挙動は未定義である。例外によって抜けるのは問題がない。
+</p>
+</article>
+
+<article>
+<h1 id="dcl.attr.deprecated"><a href="#dcl.attr.deprecated">deprecatedアトリビュート(Deprecated attribute)</a></h1>
+
+<p>
+アトリビュートトークンdeprecatedは、エンティティの利用を非推奨だと指定する。deprecated指定されたエンティティは、依然として利用できるが、何らかの理由で、利用を推奨しないと明示的にマークされる。何らかの理由とは、例えば、いずれ廃止されるであるとか、設計が古臭くてあまりよろしくないだとか、設計上の問題で使うのは危険だとか、より優れた代替品があるといった理由などだ。
+</p>
+
+<p>
+C++実装は、deprecatedが指定されたエンティティが使われた場合、エラーにはしない。ただし、親切な実装ならば、警告メッセージを出すなどの対応がなされているだろう。
+</p>
+
+<p>
+たとえば、C++の標準ライブラリで言えば、char *ストリームや、昔の関数オブジェクト用の一部のライブラリや、auto_ptrなどが該当する。C言語でいえばgetsのような関数が筆頭だ。これらは、いずれも設計があまりよろしくなく、より優れた代替品もあるため、規格で公式に廃止予定の機能とされている。規格はこのようなものにdeprecatedを指定するよう定めてはいないが、deprecatedを使うとしたら、そのような既存の古いライブラリが、もっともわかりやすい利用例だ。
+</p>
+
+<p>
+
+</p>
+
+<pre>
+// 注意：このような危険なコードを書いてはならない
+
+// getsの利用は推奨されない
+[[ deprecated ]] char * gets ( char * str ) ;
+
+int main()
+{
+    char buf[1000] ; // 十分デカイだろ？
+    gets( buf ) ; // 非推奨、危険、絶対に書くな
+}
+</pre>
+
+<p>
+deprecatedには、文字列を指定することができる。
+</p>
+
+<pre>
+[[ deprecated( "DO NOT USE gets!" ) ]]
+char * gets ( char * str ) ;
+</pre>
+
+<p>
+この文字列は、ソースコード中でコメント代わりに使えるし、また、親切なC++実装ならば、エンティティが使われた際の警告メッセージに、この文字列を含めることもできるだろう。
+</p>
+
+<p>
+このアトリビュートは、クラス、typedef名、変数、非staticデータメンバー、関数、enum、テンプレートの特殊化に適用できる。
+</p>
+
+<p>
+その主要なコード例を示す。
+</p>
+
+<pre>
+// クラス
+class [[ deprecated ]] S { } ;
+
+// typedef名
+[[ deprecated ]] typedef int INT ;
+
+// エイリアス宣言
+// アトリビュートの場所は、識別子の後、初期化子の前
+using SHORT [[ deprecated ]] = short ;
+
+// 変数
+[[ deprecated ]] int x ;
+
+// 関数
+[[ deprecated ]] void f() { }
+
+// enum
+enum struct [[ deprecated ]] E { value } ;
+
+// テンプレートの特殊化
+// テンプレートに書けば、暗黙に実体化される特殊化にも書いたことになる
+template &lt; typename T &gt;
+[[ deprecated ]]
+void g() { }
+</pre>
+
+<p>
+</p>
+
+</article>
+
+
 </article>
 
 </article>
