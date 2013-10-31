@@ -6451,9 +6451,11 @@ int main()
     Base base ;
 
     // リファレンスの場合
-    try {
+    try
+    {
         Derived &amp; ref = dynamic_cast&lt;Derived &amp;&gt;(base) ;
-    } catch ( std::bad_cast )
+    }
+    catch ( std::bad_cast )
     {
         // 変換失敗
         // リファレンスの場合、std::bad_castがthrowされる
@@ -6687,9 +6689,11 @@ int main()
     // ptrの値はnullポインター
     Base * ptr = nullptr ;
 
-    try {
+    try
+    {
         typeid( *ptr ) ; // 実行時エラー
-    } catch ( std::bad_typeid )
+    }
+    catch ( std::bad_typeid )
     {
         // 例外が投げられて、ここに処理が移る
     }
@@ -7528,9 +7532,11 @@ newが、オブジェクトのためのストレージの確保に失敗した�
 <pre>
 int main()
 {
-    try {
+    try
+    {
         new int ;
-    } catch ( std::bad_alloc )
+    }
+    catch ( std::bad_alloc )
     {
         // newが失敗した
     }
@@ -7631,19 +7637,23 @@ int main()
 // int[n]のストレージを確保できないとする。
 int main()
 {
-    try {
+    try
+    {
         std::size_t n = std::numeric_limits&lt;std::size_t&gt;::max() ;
         new int[n] ; // 要素数は定数ではない
-    } catch ( std::bad_array_new_length )
+    }
+    catch ( std::bad_array_new_length )
     {
         // ストレージを確保できなかった場合
     }
 
-    try {
+    try
+    {
         // numeric_limitsのメンバー関数maxはconstexpr関数なので、定数になる。
         std::size_t const n = std::numeric_limits&lt;std::size_t&gt;::max() ;
         new int[n] ; // 要素数は定数
-    } catch ( std::bad_alloc )
+    }
+    catch ( std::bad_alloc )
     {
         // ストレージを確保できなかった場合
     }    
@@ -7872,9 +7882,11 @@ int main()
 <pre>
 int main()
 {
-    try {
+    try
+    {
         new int ;
-    } catch ( std::bad_alloc )
+    }
+    catch ( std::bad_alloc )
     {
         // エラー処理
     }
@@ -7909,9 +7921,11 @@ struct Fail
 
 int main()
 {
-    try {
+    try
+    {
         new Fail ; // 必ず初期化に失敗する
-    } catch ( int ) { }
+    }
+    catch ( int ) { }
 }
 </pre>
 
@@ -10393,7 +10407,8 @@ for ( for初期化文 条件 ; 式 ) 文
 <pre>
 {
     for初期化文
-    while ( 条件 ) {
+    while ( 条件 )
+    {
         文
         式 ;
     }
@@ -26401,10 +26416,12 @@ operator new(size)を呼び出す。呼び出しが通常通り返れば、そ�
 <pre>
 void* operator new( std::size_t size, const std::nothrow_t &amp; ) noexcept
 {
-    try { // operator new(size)を呼び出す
+    try
+    { // operator new(size)を呼び出す
     // 呼び出しが通常通り返れば、その戻り値を返す
         return operator new( size ) ;
-    } catch ( ... )
+    }
+    catch ( ... )
     { // それ以外の場合、nullポインターを返す。
         return nullptr ;
     }
@@ -26549,9 +26566,11 @@ operator new[](size)を呼び出す。呼び出しが通常通り返れば、そ
 <pre>
 void * operator new[]( std::size_t size, const std::nothrow_t &amp; ) noexcept
 {
-    try {
+    try
+    {
         return operator new[]( size ) ;
-    } catch ( ... )
+    }
+    catch ( ... )
     {
         return nullptr ;
     }
@@ -31425,7 +31444,8 @@ void f( int i )
         // OK
         case 0 : ;
 
-        try {
+        try
+        {
             // エラー
             case 1 : ;
         }
@@ -31468,7 +31488,8 @@ end_f : ;
 
 <pre>
 void f()
-try {
+try
+{
 
 }
 catch ( ... )
@@ -32190,11 +32211,13 @@ struct X
     X() { }
     ~X() noexcept(false)
     {
-        try {
+        try
+        {
         // スタックアンワインディング中に呼ばれたデストラクターが例外によって抜け出す
         // 現行の規格の文面解釈ではstd::terminateが呼ばれてしまう
             Y y ; 
-        } catch ( int ) { }
+        }
+        catch ( int ) { }
     }
 } ;
 
@@ -32533,7 +32556,8 @@ void g()
 
 int main()
 {
-    try {
+    try
+    {
         g() ;
     }
     catch ( ... ) { }
@@ -32700,7 +32724,8 @@ struct S
 struct S
 {
     S()
-    try {
+    try
+    {
         throw 0 ;
     }
     catch ( int )
