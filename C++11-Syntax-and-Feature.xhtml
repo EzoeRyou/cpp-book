@@ -5680,7 +5680,7 @@ struct C
     int data[10][10][10] ;
     int &amp; operator []( std::initializer_list&lt;std::size_t&gt; list )
     {
-        if ( list.size() != 3 ){/* エラー処理 */}
+        if ( list.size() != 3 ) {/* エラー処理 */}
 
         auto iter = list.begin() ;
         std::size_t const i = *iter ; ++iter ;
@@ -6689,7 +6689,7 @@ int main()
 
     try {
         typeid( *ptr ) ;// 実行時エラー
-    } catch( std::bad_typeid )
+    } catch ( std::bad_typeid )
     {
         // 例外が投げられて、ここに処理が移る
     }
@@ -7530,7 +7530,7 @@ int main()
 {
     try {
         new int ;
-    } catch( std::bad_alloc )
+    } catch ( std::bad_alloc )
     {
         // newが失敗した
     }
@@ -7634,7 +7634,7 @@ int main()
     try {
         std::size_t n = std::numeric_limits&lt;std::size_t&gt;::max() ;
         new int[n] ; // 要素数は定数ではない
-    } catch( std::bad_array_new_length )
+    } catch ( std::bad_array_new_length )
     {
         // ストレージを確保できなかった場合
     }
@@ -7643,7 +7643,7 @@ int main()
         // numeric_limitsのメンバー関数maxはconstexpr関数なので、定数になる。
         std::size_t const n = std::numeric_limits&lt;std::size_t&gt;::max() ;
         new int[n] ;// 要素数は定数
-    } catch( std::bad_alloc )
+    } catch ( std::bad_alloc )
     {
         // ストレージを確保できなかった場合
     }    
@@ -7874,7 +7874,7 @@ int main()
 {
     try {
         new int ;
-    } catch( std::bad_alloc )
+    } catch ( std::bad_alloc )
     {
         // エラー処理
     }
@@ -7911,7 +7911,7 @@ int main()
 {
     try {
         new Fail ; // 必ず初期化に失敗する
-    } catch( int ) { }
+    } catch ( int ) { }
 }
 </pre>
 
@@ -10236,7 +10236,7 @@ void f( int const value )
 </p>
 
 <pre>
-while( true )
+while ( true )
     int i ;
 </pre>
 
@@ -10245,7 +10245,7 @@ while( true )
 </p>
 
 <pre>
-while( true )
+while ( true )
 { int i ; }
 </pre>
 
@@ -10262,7 +10262,7 @@ struct C
 
 int main()
 {
-    while( true )
+    while ( true )
     { // 生成、破棄を繰り返す
         C c ;
     }
@@ -10684,7 +10684,7 @@ int x [10] ;
 
 <pre>
 std::vector&lt;int&gt; v ;
-for( auto i : v )
+for ( auto i : v )
 {
     // 処理
 }
@@ -10736,7 +10736,7 @@ break文は、繰り返し文かswitch文の中で使うことができる。bre
 <pre>
 int main()
 {
-    while( true )
+    while ( true )
     {
         break ;
     }
@@ -10767,7 +10767,7 @@ break文によって抜ける繰り返し文かswitch文とは、break文が書�
 <pre>
 int main()
 {
-    while( true ) // 外側
+    while ( true ) // 外側
         while ( true ) // 内側
         {
             break ;
@@ -10798,7 +10798,7 @@ while文やdo文の場合、条件が評価され、その結果次第で、次�
 <pre>
 int main()
 {
-    while( true )
+    while ( true )
     {
         continue ;
     }
@@ -11270,7 +11270,7 @@ int main()
     {
         f() ; // 関数fのstaticローカル変数xの初期化は未完了
     }
-    catch( ... ) { }
+    catch ( ... ) { }
     f() ; // 関数fのstaticローカル変数xの初期化完了
 
 }
@@ -14267,7 +14267,7 @@ void g()
 {
     try { }
 // エラー、例外宣言
-    catch( alignas(4) int x ) { }
+    catch ( alignas(4) int x ) { }
 }
 </pre>
 
@@ -15655,7 +15655,7 @@ try
 {
 // 関数の本体
 }
-catch(...)
+catch (...)
 {
 // 例外ハンドラー
 } 
@@ -26344,7 +26344,7 @@ void* operator new( std::size_t size )
     // std::mallocに実引数0を渡した場合の挙動は定義されていない
     if ( size == 0 ) { size = 1 ; }
 
-    while( true ) // ループを実行する
+    while ( true ) // ループを実行する
     {
         // ループの中で、要求されたストレージの確保を試みる
         void * ptr = std::malloc( size ) ;
@@ -26404,7 +26404,7 @@ void* operator new( std::size_t size, const std::nothrow_t &amp; ) noexcept
     try { // operator new(size)を呼び出す
     // 呼び出しが通常通り返れば、その戻り値を返す
         return operator new( size ) ;
-    } catch( ... )
+    } catch ( ... )
     { // それ以外の場合、nullポインターを返す。
         return nullptr ;
     }
@@ -26551,7 +26551,7 @@ void * operator new[]( std::size_t size, const std::nothrow_t &amp; ) noexcept
 {
     try {
         return operator new[]( size ) ;
-    } catch( ... )
+    } catch ( ... )
     {
         return nullptr ;
     }
@@ -31374,11 +31374,11 @@ int main()
     {
         // int型のオブジェクトがthrowされた時に実行される
     }
-    catch( double d )
+    catch ( double d )
     {
         // double型のオブジェクトがthrowされた時に実行される
     }
-    catch( ... )
+    catch ( ... )
     {
         // 任意の型のオブジェクトがthrowされた時に実行される
     }
@@ -31405,7 +31405,7 @@ int main()
 
         end_try_block: ;
     }
-    catch( ... )
+    catch ( ... )
     {
         begin_handler: ;
 
@@ -31471,7 +31471,7 @@ void f()
 try {
 
 }
-catch( ... )
+catch ( ... )
 {
 
 }
@@ -31491,7 +31491,7 @@ struct X
     try
     : m1(0), m2(0) // コンストラクター初期化子
     { }
-    catch( ... ) { }
+    catch ( ... ) { }
 } ;
 </pre>
 
@@ -31553,7 +31553,7 @@ struct X
 
     ~X()
     try {}
-    catch( ... ) { }
+    catch ( ... ) { }
     
 } ;
 
@@ -31604,11 +31604,11 @@ int main()
         try
         {
             try { f() } // 関数fの中で例外を投げる
-            catch( ... ) { } // ここに処理が移る
+            catch ( ... ) { } // ここに処理が移る
         }
-        catch( ... ) { }
+        catch ( ... ) { }
     }
-    catch( ... ) { }
+    catch ( ... ) { }
 }
 </pre>
 
@@ -31643,7 +31643,7 @@ void f()
     {
         throw 0 ; // 例外オブジェクトはint型のlvalue
     }
-    catch( int exception_object ) // 例外オブジェクトで初期化される
+    catch ( int exception_object ) // 例外オブジェクトで初期化される
     { }
 }
 </pre>
@@ -31808,7 +31808,7 @@ try
 {
     throw 0 ;
 }
-catch( ... )
+catch ( ... )
 {
     // 例外はとらえられた
 
@@ -31842,7 +31842,7 @@ int main()
         // C型のオブジェクトcが破棄される
         // 例外中に例外が投げられたため、std::terminateが呼ばれる
     }
-    catch( ... ){ }
+    catch ( ... ) { }
 }
 </pre>
 
@@ -31868,8 +31868,8 @@ int main( )
         // 例外オブジェクトの型はint
         throw X() ;
     }
-    catch( X &amp; exception ) { }
-    catch( int exception ) { } // このハンドラーでとらえられる
+    catch ( X &amp; exception ) { }
+    catch ( int exception ) { } // このハンドラーでとらえられる
 }
 </pre>
 
@@ -31897,7 +31897,7 @@ int main( )
         // コピーコンストラクターの実行は評価完了後
         throw X() ;
     }
-    catch( ... ) { }
+    catch ( ... ) { }
 }
 </pre>
 
@@ -31920,7 +31920,7 @@ struct C
     {
         // 例外によって抜け出す関数を呼ぶ
         try { f() ; }
-        catch( ... ) { }
+        catch ( ... ) { }
     }
 } ;
 
@@ -31932,7 +31932,7 @@ int main()
         throw 0 ;
         // 例外がハンドラーにとらえられる前に、cのデストラクターが呼ばれる
     }
-    catch( ... ){ }
+    catch ( ... ) { }
 }
 </pre>
 
@@ -31958,7 +31958,7 @@ int main()
             throw ; // 一度捉えた例外を再び投げる
         }
     }
-    catch( int e )
+    catch ( int e )
     {
         // 再び投げられた例外をとらえる
     }
@@ -32008,7 +32008,7 @@ int main()
     }
     // このハンドラーに処理が移る過程で、
     // c, b, aの順に破棄される
-    catch( int ) { }
+    catch ( int ) { }
 }
 </pre>
 
@@ -32055,7 +32055,7 @@ int main()
     {
         X x ;
     }
-    catch( int ) { }
+    catch ( int ) { }
 }
 </pre>
 
@@ -32141,7 +32141,7 @@ int main()
     {
         new X ; // 対応する解放関数が呼ばれる
     }
-    catch( int ) { }
+    catch ( int ) { }
 }
 </pre>
 
@@ -32170,7 +32170,7 @@ int main()
         X x ;
         throw 0 ; // std::terminateが呼ばれる
     }
-    catch( int ) { }
+    catch ( int ) { }
 }
 </pre>
 
@@ -32194,7 +32194,7 @@ struct X
         // スタックアンワインディング中に呼ばれたデストラクターが例外によって抜け出す
         // 現行の規格の文面解釈ではstd::terminateが呼ばれてしまう
             Y y ; 
-        } catch( int ) { }
+        } catch ( int ) { }
     }
 } ;
 
@@ -32205,7 +32205,7 @@ int main()
         X x ;
         throw 0 ;
     }
-    catch( int ) { }
+    catch ( int ) { }
 }
 </pre>
 
@@ -32237,9 +32237,9 @@ int main()
     {
         throw 0 ; 例外オブジェクトの型はint
     }
-    catch( double d ) {} 
-    catch( float f ) { }
-    catch( int i ) {} // このハンドラーに処理が移る
+    catch ( double d ) { }
+    catch ( float f ) { }
+    catch ( int i ) { } // このハンドラーに処理が移る
 
 }
 </pre>
@@ -32265,9 +32265,9 @@ int main()
     try { }
     catch ( incomplete x ) { } // エラー、不完全型
     catch ( abstract a ) { } // エラー、抽象クラス型
-    catch( abstract * a ) { } // OK、抽象クラスへのポインター型
-    catch( abstract &amp; a ) { } // OK、抽象クラスへのリファレンス型
-    catch( int &amp;&amp; rref) { } // エラー、rvalueリファレンス型
+    catch ( abstract * a ) { } // OK、抽象クラスへのポインター型
+    catch ( abstract &amp; a ) { } // OK、抽象クラスへのリファレンス型
+    catch ( int &amp;&amp; rref) { } // エラー、rvalueリファレンス型
 }
 </pre>
 
@@ -32335,7 +32335,7 @@ int main()
         Derived d ;
         throw d ; // 例外オブジェクトの型はDerived
     }
-    catch( Base &amp; ) { } // 適合、BaseはDerivedの曖昧性のないpublicな基本クラス
+    catch ( Base &amp; ) { } // 適合、BaseはDerivedの曖昧性のないpublicな基本クラス
 }
 </pre>
 
@@ -32357,8 +32357,8 @@ int main()
         Sub sub ;
         throw sub ; // 例外オブジェクトの型はSub
     }
-    catch( Base &amp; ) { } // 適合しない、非public基本クラス
-    catch( Ambiguous &amp; ) { } // 適合しない、曖昧
+    catch ( Base &amp; ) { } // 適合しない、非public基本クラス
+    catch ( Ambiguous &amp; ) { } // 適合しない、曖昧
 }
 </pre>
 
@@ -32386,7 +32386,7 @@ int main()
         Derived d ;
         throw &amp;d ; // 例外オブジェクトの型はDerived
     }
-    catch( Base * ) { } // 適合、BaseはDerivedの曖昧性のないpublicな基本クラス
+    catch ( Base * ) { } // 適合、BaseはDerivedの曖昧性のないpublicな基本クラス
 }
 </pre>
 
@@ -32406,7 +32406,7 @@ int main()
 
         throw &amp;i ;
     }
-    catch( const int * ) { }
+    catch ( const int * ) { }
 }
 </pre>
 </li>
@@ -32432,10 +32432,10 @@ int main()
     {
         throw nullptr ;
     }
-    catch( void * ) { } // 適合
-    catch( int * ) { } // 適合
-    catch( X * ) { } // 適合
-    catch( int X::* ) { } // 適合
+    catch ( void * ) { } // 適合
+    catch ( int * ) { } // 適合
+    catch ( X * ) { } // 適合
+    catch ( int X::* ) { } // 適合
 }
 </pre>
 
@@ -32458,7 +32458,7 @@ int main()
     {
         throw 0 ; // 例外オブジェクトの型はint
     }
-    catch( int * ) // 適合しない
+    catch ( int * ) // 適合しない
 }
 </pre>
 
@@ -32491,9 +32491,9 @@ int main()
 void f()
 {
     try { }
-    catch( int ) { }
-    catch( double ) { }
-    catch( ... ) { } // どの例外にも適合する
+    catch ( int ) { }
+    catch ( double ) { }
+    catch ( ... ) { } // どの例外にも適合する
 }
 </pre>
 
@@ -32505,8 +32505,8 @@ void f()
 void f()
 {
     try { }
-    catch( ... ) { }
-    catch( int ) { } // エラー
+    catch ( ... ) { }
+    catch ( int ) { } // エラー
 }
 </pre>
 
@@ -32518,7 +32518,7 @@ tryブロックのハンドラーのうちに、適合するハンドラーが�
 void f()
 {
     try { throw 0 ; } // 例外オブジェクトの型はint
-    catch( double ) { } // 適合しない
+    catch ( double ) { } // 適合しない
 }
 
 void g()
@@ -32528,7 +32528,7 @@ void g()
     {
         f() ;
     }
-    catch( int ) { } // 適合する
+    catch ( int ) { } // 適合する
 }
 
 int main()
@@ -32536,7 +32536,7 @@ int main()
     try {
         g() ;
     }
-    catch( ... ) { }
+    catch ( ... ) { }
 }
 </pre>
 
@@ -32615,7 +32615,7 @@ struct S
     S( int ) try
         : S()
     { throw 0 ; }
-    catch( ... )
+    catch ( ... )
     {
         // デストラクターS::~Sはすでに実行されている
     }
@@ -32648,7 +32648,7 @@ struct Derived : Base
 {
     ~Derived() noexcept(false)
     try { throw 0 ; }
-    catch( ... )
+    catch ( ... )
     {
         // 基本クラスはすでに破棄されている
         // 非staticデータメンバーについても同様
@@ -32685,7 +32685,7 @@ struct S
 {
     S()
     try { }
-    catch( ... )
+    catch ( ... )
     {
         return ; // エラー
     }
@@ -32720,7 +32720,7 @@ try
 {
     throw 0 ;
 }
-catch( int )
+catch ( int )
 {
 // return ;と同等
 }
@@ -32736,7 +32736,7 @@ try
 {
     throw 0 ;
 }
-catch( ... )
+catch ( ... )
 {
 // 挙動は未定義
 }
@@ -32753,7 +32753,7 @@ int main()
     {
         throw 123 ; // 例外オブジェクの型はint、値は123
     }
-    catch( int e )
+    catch ( int e )
     {
         // eの型はint、値は123
     }
@@ -32771,7 +32771,7 @@ int main()
     {
         throw 123 ;
     }
-    catch( int )
+    catch ( int )
     {
         // int型の一時オブジェクトが生成され、例外オブジェクトからコピー初期化される
         // 名前がないので、参照する方法はない
@@ -32797,7 +32797,7 @@ int main()
     {
         throw 123 ;
     }
-    catch( int e )
+    catch ( int e )
     {
         S s( &amp;e ) ;
     
@@ -32823,7 +32823,7 @@ int main()
         {
             throw 0 ;
         }
-        catch( int e )
+        catch ( int e )
         {
             ++e ; // 変更
             throw ; // 例外オブジェクトの再throw
@@ -32849,7 +32849,7 @@ int main()
         {
             throw 0 ;
         }
-        catch( int &amp; e )
+        catch ( int &amp; e )
         {
             ++e ; // 変更
             throw ; // 例外オブジェクトの再throw
