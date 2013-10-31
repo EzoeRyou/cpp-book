@@ -10462,10 +10462,6 @@ int main()
 <h1 id="stmt.ranged"><a href="#stmt.ranged">range-based for文（The range-based for statement）</a></h1>
 
 <p>
-TODO: Madrid meeting後に変更する。ADL baseではなくtraits baseになる予定。
-</p>
-
-<p>
 ここでは、range-based forの言語機能を説明している。ライブラリとしてのレンジや、ユーザー定義のクラスでレンジをサポートする方法については、ライブラリの<a href="#iterator.range">レンジ</a>を参照。
 </p>
 
@@ -10487,7 +10483,7 @@ range-based forは、forに続けて、括弧を書く。括弧の中には、�
 int main()
 {
     int a[] = { 1, 2, 3 } ;
-    for( int i : a ) ; // 各要素をint型のコピーで受ける
+    for ( int i : a ) ; // 各要素をint型のコピーで受ける
     for ( int &amp; ref : a ) ; // 各要素をリファレンスで受ける
     for ( auto i : a ) ; // auto指定子を使った例
 }
