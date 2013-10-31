@@ -13504,8 +13504,24 @@ int main()
 <h1 id="namespace.unnamed"><a href="#namespace.unnamed">無名名前空間（Unnamed namespaces）</a></h1>
 
 <p>
-TODO:変更されそうなので保留
+無名名前空間(unnamed namespace)は、名前をつけない名前空間の宣言である。
 </p>
+
+<pre>
+namespace { }
+</pre>
+
+<p>
+無名名前空間は、通常の名前つき名前空間とは違い、その名前空間スコープ内のエンティティを、内部リンケージにするのに使われる。
+</p>
+
+<pre>
+namespace
+{
+    int x ; // 内部リンケージ
+}
+</pre>
+
 </article>
 
 <article>
