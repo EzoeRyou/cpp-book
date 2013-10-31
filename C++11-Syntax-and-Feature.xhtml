@@ -14529,7 +14529,32 @@ void g() { }
 </pre>
 
 <p>
+deprecatedで宣言されていなかった名前やエンティティを、後でdeprecated宣言したり、その逆をしたりしてもよい。
 </p>
+
+<pre>
+                    void f() ;
+[[ deprecated ]]    void f() ; // OK
+
+[[ deprecated ]]    void g() ;
+                    void g() ; // OK
+</pre>
+
+<p>
+先の宣言でdeprecated指定していなかった名前やエンティティは、後の宣言でdeprecated指定した場合、そこからdeprecated指定される。すでにdeprecated指定された宣言に、あとからdeprecated指定なしの宣言を書いても、既に指定されたdeprecatedは取り消されない。
+</p>
+
+<p>
+再宣言で、異なるdeprecateアトリビュートの書き方をすることも許されている。
+</p>
+
+<pre>
+[[ deprecated ]] void f() ;
+[[ deprecated("DO NOT USE") void f() ; // OK
+[[ deprecated("use g() instead")]] void f() ; // OK
+</pre>
+
+
 
 </article>
 
