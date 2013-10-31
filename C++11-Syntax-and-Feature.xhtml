@@ -16482,7 +16482,7 @@ int &amp; g() ;
 auto g() -&gt; int &amp; ;
 
 // クラス定義のクラスメンバーの宣言
-struct S { int &amp; ; } ;
+struct S { int &amp; ref ; } ;
 
 // extern指定子（refは別の場所で定義されている）
 extern int &amp; ref ;
