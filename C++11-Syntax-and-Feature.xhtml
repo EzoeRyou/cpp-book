@@ -21072,9 +21072,42 @@ friend宣言とテンプレートの組み合わせについては、<a href="#t
 <article>
 <h1 id="class.protected"><a href="#class.protected">protectedメンバーアクセス（Protected member access）</a></h1>
 
-<p class="editorial-note">
-TODO:保留
+<p>
+protectedメンバーは、friendか、メンバーの宣言されたクラスか、クラスから派生しているクラスからアクセスすることができる。
 </p>
+
+<pre>
+void g() ;
+
+class Base
+{
+    friend void g() ;
+
+protected :
+    int member ;
+} ;
+
+void f()
+{
+    Base base ;
+    base.member ; // エラー、protectedメンバー
+}
+
+void g()
+{
+    Base base ;
+    base.member ; // OK、gはBaseのfriend
+}
+
+class Derived : protected Base
+{
+    void f()
+    {
+        member ; // OK、DerivedはBaseから派生している
+    }
+} ;
+</pre>
+
 </article>
 
 <article>
