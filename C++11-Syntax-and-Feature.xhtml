@@ -1683,7 +1683,7 @@ TODO: FDIS後に変更される。
 void f( int ) ;
 
 // 宣言と定義
-void f ( int )  { } 
+void f( int ) { }
 </pre>
 </section>
 
@@ -5438,7 +5438,7 @@ int main()
 #include &lt;iostream&gt;
 
 template &lt; typename Func &gt;
-void call ( Func func )
+void call( Func func )
 {
     func() ; // helloと表示する
 }
@@ -7891,7 +7891,7 @@ sizeof( 1 + 1 ) ;
 </p>
 
 <pre>
-int f () ;
+int f() ;
 struct Incomplete ;
 
 // 関数呼び出しは「関数」ではない
@@ -11679,7 +11679,7 @@ struct X
 struct Y
 {
     int member ;
-    Y ( int value ) : member(value) { }
+    Y( int value ) : member(value) { }
 } ;
 
 int g()
@@ -13366,7 +13366,7 @@ using type = decltype( static_cast&lt; int &amp;&amp; &gt;(x) ) ;
 <pre>
 int x ;
 // decltype( (x) ) の型は、int &amp;
-using type = decltype ( (x) ) ;
+using type = decltype( (x) ) ;
 </pre>
 
 <p>
@@ -13398,7 +13398,7 @@ eがlvalueで、しかも括弧式で囲まれている場合は、リファレ�
 <pre>
 int x = 0 ;
 
-decltype ( x ) t1 = x ; // t1の型はint
+decltype( x ) t1 = x ; // t1の型はint
 decltype( (x) ) t2 = x ; // t2の型はint &amp;
 </pre>
 
@@ -13408,8 +13408,8 @@ decltypeは、他の型指定子や宣言子と併用できる。
 
 <pre>
 int x ;
-decltype ( x ) * ptr ; // int *
-decltype ( x ) const &amp; const_ref = x ; // int const &amp;
+decltype( x ) * ptr ; // int *
+decltype( x ) const &amp; const_ref = x ; // int const &amp;
 </pre>
 
 <p>
@@ -13440,7 +13440,7 @@ Base base ;
 struct Derived
     : decltype(base) // decltypeを基本クラスとして指定
 {
-    Derived ()
+    Derived()
         : decltype(base) () // メンバー初期化子
     { }
 } ;
@@ -14959,7 +14959,7 @@ C++実装は、deprecatedが指定されたエンティティが使われた場�
 // 注意：このような危険なコードを書いてはならない
 
 // getsの利用は推奨されない
-[[ deprecated ]] char * gets ( char * str ) ;
+[[ deprecated ]] char * gets( char * str ) ;
 
 int main()
 {
@@ -14974,7 +14974,7 @@ deprecatedには、文字列を指定することができる。
 
 <pre>
 [[ deprecated( "DO NOT USE gets!" ) ]]
-char * gets ( char * str ) ;
+char * gets( char * str ) ;
 </pre>
 
 <p>
@@ -15514,7 +15514,7 @@ struct S
 int S::value ;
 
 void ( S:: * p1 )( void ) = &amp;S::func ; // エラー
-void ( *p2 ) (void) = &amp;S::func ; // OK
+void ( *p2 )(void) = &amp;S::func ; // OK
 int S:: * p3 = &amp;S::value ; // エラー
 </pre>
 
@@ -16109,7 +16109,7 @@ void f() ; // 宣言
 void f() {} // 定義
 
 void // 指定子
-g () // 宣言子
+g() // 宣言子
 { } // 関数の本体
 </pre>
 
@@ -16143,7 +16143,7 @@ try
 {
 // 関数の本体
 }
-catch (...)
+catch ( ... )
 {
 // 例外ハンドラー
 } 
@@ -16562,7 +16562,7 @@ const修飾された型をデフォルト初期化する場合、型はユーザ
 struct X { } ;
 struct Y { Y() { } } ;
 
-int main ()
+int main()
 {
     int const a ; // エラー、intはユーザー定義コンストラクターを持つクラス型ではない
     X const b ; // エラー、Xはユーザー定義コンストラクターを持つクラス型ではない
@@ -16873,7 +16873,7 @@ struct Elem { } ;
 
 int main()
 {
-    S s1 ( 0 ) ; // エラー、コンストラクターが曖昧
+    S s1( 0 ) ; // エラー、コンストラクターが曖昧
     Elem elem ;
     S s2( elem ) ; // エラー、適切なコンストラクターが見つからない
 }
@@ -21785,7 +21785,7 @@ struct Y
     Y() : member(data) { }
 } ;
 
-int main ()
+int main()
 {
     X x ; // エラー、デフォルトコンストラクターはdelete定義されている
     Y y ; // OK、ユーザー定義のデフォルトコンストラクターがある
@@ -21826,7 +21826,7 @@ private :
     X( double ) { }
 } ;
 
-int main ()
+int main()
 {
     X a( 0 ) ; // OK、X::X(int)はpublicメンバー
     X b( 0.0 ) ; // エラー、X::X(double)はprivateメンバー
@@ -21968,7 +21968,7 @@ struct Z
     Z() : ref( OBJECT ) { }
 } ;
 
-int main ()
+int main()
 {
     X x ; // エラー、デフォルトコンストラクターがdelete定義される
     Y y ; // OK
@@ -22010,7 +22010,7 @@ struct Z
     Z() { }    
 } ;
 
-int main ()
+int main()
 {
     X x ; // エラー
     Y y ; // OK
@@ -22047,7 +22047,7 @@ union Z
 } ;
 
 
-int main ()
+int main()
 {
     X x ; // エラー
     Y y ; // エラー
@@ -22114,7 +22114,7 @@ struct Ambiguous
 
 struct X : Ambiguous { } ;
 
-int main ()
+int main()
 {
     Ambiguous a ; // エラー、デフォルトコンストラクターのオーバーロード解決が曖昧
     X b ; // エラー、デフォルトコンストラクターは暗黙にdelete定義されている
@@ -24186,7 +24186,7 @@ struct A
 
 struct B : A
 {
-    virtual void f () { }
+    virtual void f() { }
     // B::f, A::gを呼び出す
     B() { f() ; g() ; }
     virtual ~B() { f() ; g() ; }
@@ -25652,7 +25652,7 @@ int main()
 <pre>
 struct X
 {
-    X ( ) { }
+    X( ) { }
     template &lt; typename T &gt;
     X( std::initializer_list&lt;T&gt; ) { }
 } ;
@@ -28352,7 +28352,7 @@ int main( )
 
 <pre>
 // やや読みにくい宣言
-template &lt; void ( * ... func_pack ) () &gt;
+template &lt; void ( * ... func_pack )() &gt;
 class X { } ;
 
 using type = void (*)() ;
@@ -28612,7 +28612,7 @@ int main( )
 <pre>
 // 実引数を取らず、任意の型を戻り値に返す関数へのポインターを実引数に取る関数
 template &lt; typename ... ReturnType &gt;
-void f( ReturnType (* ... pack) ( ) )
+void f( ReturnType (* ... pack)( ) )
 { }
 
 void g( ) { }
@@ -29064,7 +29064,7 @@ print()
 <pre>
 // 終了条件
 template &lt; typename T &gt;
-T min ( T a1, T a2 )
+T min( T a1, T a2 )
 {
     return a1 &lt; a2 ? a1 : a2 ;
 }
@@ -30303,7 +30303,7 @@ int main()
     int * p = nullptr ;
     f( p ) ; // #2の特殊化が呼ばれる
 
-    void ( *fp ) ( int * ) = &amp;f ; // #2の特殊化のアドレスを得る
+    void ( *fp )( int * ) = &amp;f ; // #2の特殊化のアドレスを得る
 }
 </pre>
 
@@ -31153,7 +31153,7 @@ int main()
     func( 0 ) ; // OK、プログラム中で明示的実体化されている
     func( 0.0 ) ; // OK、プログラム中で明示的実体化されている
 
-    func ( 'a' ) ; // エラー、定義がないため、実体化できない。
+    func( 'a' ) ; // エラー、定義がないため、実体化できない。
 }
 </pre>
 
@@ -31810,7 +31810,7 @@ struct X
 template &lt; &gt;
 int X&lt;int&gt;::data ; 
 
-// エラー、メンバー関数int ()の宣言
+// エラー、メンバー関数int()の宣言
 // 文法上の制約による
 template &lt; &gt;
 int X&lt;int&gt;::data () ;
