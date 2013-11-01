@@ -3880,7 +3880,7 @@ long long int
 
 <p>
 この並び順は、小さい順である。標準符号つき整数型は、少なくともこの順序における、前の型の値と同じかそれ以上の大きさのストレージを占める。
-</p>
+</p><a href="#basic.fundamental">基本型(Fundamental types)</a>
 
 <p>
 この他に、実装依存の拡張符号つき整数型(extended signed integer type)がある。これは、具体的には規格で定義されないが、実装が独自に提供する符号付きの整数型を指す。標準符号つき整数型と、拡張符号つき整数型をひっくるめて、符号つき整数型(signed integer type)と呼ぶ。
@@ -4150,6 +4150,49 @@ CV修飾されているか、CV修飾されていない、void型へのポイン
 
 </article>
 
+<article>
+<h1 id="basic.type.qualifier"><a href="#basic.type.qualifier">CV修飾子(CV-qualifiers)</a></h1>
+<p>
+<a href="#basic.compound">複合型(Compound types)</a>と<a href="#basic.fundamental">基本型(Fundamental types)</a>で説明されている型は、CV非修飾型(cv-unqualified type)である。CV非修飾な完全型、不完全型、voidには、三種類のCV修飾された型がある。const修飾された型、volatile修飾された型、const-volatile修飾された型だ。
+</p>
+
+<ul>
+<li>
+constオブジェクトとは、オブジェクトの型が、const Tとなるか、あるいはそのようなオブジェクトのサブオブジェクトである。
+</li>
+
+<li>
+volatileオブジェクトとは、オブジェクトの型が、volatile Tとなるか、あるいはそのようなオブジェクトのサブオブジェクトである。
+</li>
+
+<li>
+const volatileオブジェクトとは、オブジェクトの方が、const volatile Tとなるか、あるいはそのようなオブジェクトのサブオブジェクトである。
+</li>
+</ul>
+
+<p>
+ある型のCV修飾された型と、CV非修飾の型は、異なる型である。ただし、同じ表現とアライメント要求を持つ。
+</p>
+
+<p>
+CV修飾子には、半順序が存在する。これは、よりCV修飾されている型を比較して決定できる。
+</p>
+
+<p>
+その順序は以下の通り。
+</p>
+
+<pre>
+CV非修飾    &lt;   const
+CV非修飾    &lt;   volatile
+CV非修飾    &lt;   const volatile
+const       &lt;   cosnt volatile
+volatile    &lt;   const volatile
+</pre>
+
+
+
+</article>
 
 </article>
 
