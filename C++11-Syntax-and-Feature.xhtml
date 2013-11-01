@@ -11459,7 +11459,7 @@ int main()
 </p>
 
 <pre>
-アトリビュート指定子 指定子　宣言子 ;
+アトリビュート指定子 指定子 宣言子 ;
 </pre>
 
 <p>
@@ -22201,7 +22201,7 @@ int main()
     Derived obj ;
     int a = obj ; // OK
     char b = obj ; // OK
-    bool c = obj ; // エラー、　曖昧
+    bool c = obj ; // エラー、曖昧
 }
 </pre>
 
@@ -25792,7 +25792,7 @@ X operator + ( X * ) ;
 </p>
 
 <pre>
-struct X　{　} ;
+struct X { } ;
 
 X operator / ( X &amp; ) ; // エラー、仮引数が少ない
 X operator / ( X &amp;, X &amp;, X &amp; ) ; // エラー、仮引数が多い
@@ -25807,7 +25807,7 @@ X operator / ( X &amp;, X &amp;, X &amp; ) ; // エラー、仮引数が多い
 </p>
 
 <pre>
-struct X　{　} ;
+struct X { } ;
 
 void operator + ( X &amp; ) ; // OK、戻り値の型は自由
 void operator ++ ( X const &amp; ) ; // OK、constなlvalueリファレンスでもよい
@@ -26344,7 +26344,7 @@ a++ ; // 後置
 </p>
 
 <p>
-前置演算子は、++xという式に対して、非staticメンバー関数の場合、x.operator ++ ()、非メンバー関数の場合、operator ++　( x )のように呼び出される。
+前置演算子は、++xという式に対して、非staticメンバー関数の場合、x.operator ++ ()、非メンバー関数の場合、operator ++( x )のように呼び出される。
 </p>
 
 <pre>
@@ -26638,7 +26638,7 @@ void operator delete( void* ptr, const std::nothrow_t &amp; ) noexcept
 
 <h1>配列形の確保関数</h1>
 <pre>
-void　* operator new[](　std::size_t size　)　;
+void * operator new[]( std::size_t size ) ;
 </pre>
 
 <dl>
@@ -28194,7 +28194,7 @@ void f( param_pack const &amp; ... pack ) ;
 // ポインター型しか実引数に指定できない関数
 template &lt; typename ... Types &gt;
 void f( Types * ... pack  )
-{　}
+{ }
 
 int main( )
 {
