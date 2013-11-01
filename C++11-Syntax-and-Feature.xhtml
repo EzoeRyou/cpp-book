@@ -14463,9 +14463,7 @@ alignas( f() ) char b1[128] ;
 
 // エラー
 int g() { return 4 ; }
-alignas( g() char b2[128] ;
-
-alignas( 
+alignas( g() ) char b2[128] ;
 
 // 実装がサポートしている場合OK
 // 実装がサポートしていなければエラー
