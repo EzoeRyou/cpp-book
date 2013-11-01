@@ -20672,10 +20672,10 @@ struct X
 </p>
 
 <pre>
-struct Base { int f ; }
+struct Base { virtual void f() { } }
 struct abstract_class : Base
 {
-    virtual void f() new = 0 ; // virt-specifierの後
+    virtual void f() override = 0 ; // virt-specifierの後
 } ;
 </pre>
 
