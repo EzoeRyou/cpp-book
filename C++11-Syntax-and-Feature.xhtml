@@ -20656,7 +20656,36 @@ struct abstract_class
 </pre>
 
 <p>
-ピュアvirtual関数には、定義を与えることはできない。
+ピュアvirtual関数は、呼ばれない限り、定義する必要はない。
+</p>
+
+<pre>
+struct Base
+{
+    virtual void f() = 0 ;
+    virtual void g() = 0 ;
+} ;
+
+struct Derived
+{
+    virtual void g() { } 
+} ;
+
+void call_g( Base &amp; base )
+{
+    base.g() ;
+}
+
+int main()
+{
+    Derived d ;
+    call_g( d ) ;
+}
+</pre>
+
+
+<p>
+ピュア指定子と定義を両方書くことはできない。つまり、ピュアvirtual関数には、定義を与えることはできない。
 </p>
 
 <pre>
