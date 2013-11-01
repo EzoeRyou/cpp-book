@@ -3820,6 +3820,240 @@ void
 T1型とT2型が同じであるならば、T1とT2は、レイアウト互換型(layout-compatible type)である。
 </p>
 
+<article>
+<h1 id="basic.fundamental"><a href="#basic.fundamental">基本型(Fundamental types)</a></h1>
+
+<p>
+文字(char)のオブジェクトは、基本文字セットをすべて表現できる大きさを持つ。基本文字セットの文字が文字オブジェクトに格納されている場合、文字オブジェクトの整数の値と、その文字の文字リテラルの値は、等しくなる。
+</p>
+
+<pre>
+char c = 'A' ;
+c == 'A' ; // true
+</pre>
+
+<p>
+char型が負数を表現できるかどうかは、実装依存である。
+</p>
+
+<pre>
+char c = static_cast&lt;char&gt;(-1) ; // 実装依存
+</pre>
+
+<p>
+文字型は、明示的にunsignedかsignedで宣言できる。char, signed char, unsigned charは、それぞれ別の型として区別される。この3つの型を、ナロー文字型(狭い文字型、narrow character type)と呼ぶ。
+</p>
+
+<p>
+ひとつのchar, signed char, unsigned char型のオブジェクトは同じ大きさのストレージを占め、アライメント要求も同じである。つまり、3つの型が同じオブジェクト表現を持つ。
+</p>
+
+<p>
+ナロー文字型では、オブジェクト表現を構成するすべてのビット列が、値表現として使われる。符号なしなナロー文字型では、オブジェクト表現のすべてのビット列が、値表現の数値を表現するのに使われる。この点で、ナロー文字型は、他の型にはない独自の特徴を持つ。慣習的にナロー文字型は任意のバイト列を表現するのに使われている。
+</p>
+
+<p>
+char型のオブジェクトの値は、signed charかunsigned charのどちらかの値と等しい。どちらと等しくなるのかは、実装に委ねられている。
+</p>
+
+<pre>
+char c = 'A' ;
+signed char sc = 'A' ;
+unsigned char uc = 'A' ;
+</pre>
+
+<p>
+この例では、規格準拠の実装では、cの値は、scかucのどちらかと必ず等しくなる。どちらと等しいのかは規定されていない。
+</p>
+
+<p>
+標準符号つき整数型(standard signed integer type)には、5種類ある。
+</p>
+
+<pre>
+signed char
+short int
+int
+long int
+long long int
+</pre>
+
+<p>
+この並び順は、小さい順である。標準符号つき整数型は、少なくともこの順序における、前の型の値と同じかそれ以上の大きさのストレージを占める。
+</p>
+
+<p>
+この他に、実装依存の拡張符号つき整数型(extended signed integer type)がある。これは、具体的には規格で定義されないが、実装が独自に提供する符号付きの整数型を指す。標準符号つき整数型と、拡張符号つき整数型をひっくるめて、符号つき整数型(signed integer type)と呼ぶ。
+</p>
+
+<p>
+素のintは、実行環境のアーキテクチャにとって自然なサイズとなる。
+</p>
+
+<p>
+それぞれの標準符号つき整数型に対応する、標準符号なし整数型(standard unsigned integer type)が存在する。
+</p>
+
+<pre>
+unsigned char
+unsigned short int
+unsigned int
+unsigned long int
+unsigned long long int
+</pre>
+
+<p>
+それぞれ、対応する標準符号つき整数型と、同じ大きさのストレージ、同じアライメント要求を持つ。つまり、符号つきの整数型と対応する符号なしの整数型は、それぞれおなじオブジェクト表現を持つ。
+</p>
+
+<pre>
+sizeof( int )   ==  sizeof( unsigned int ) ;    // true
+alignof( int )  ==  alignof( unsigned int ) ;   // true
+</pre>
+
+<p>
+標準符号つき整数型と同じように、標準符号なし整数型にも、実装依存の拡張符号なし整数型(extended unsigned integer type)が存在する。これも、それぞれ対応する拡張符号つき整数型とおなじ大きさのストレージとアライメント要求を持つ。
+</p>
+
+<p>
+標準符号なし整数型と拡張符号なし整数型をひっくるめて、符号なし整数型(unsigned integer type)と呼ぶ。
+</p>
+
+<p>
+符号つき整数型と対応する符号なし整数の型の、値表現は同じである。
+</p>
+
+<p>
+標準符号つき整数型と標準符号なし整数型をひっくるめて、標準整数型(standard integer type)と呼ぶ。拡張符号つき整数型と拡張符号なし整数型をひっくるめて、拡張整数型(extended integer type)と呼ぶ。
+</p>
+
+<p>
+C++の整数型は、C言語の標準規格で定義されている要件と同じ要件を満たす。つまり、CとC++はこの点において互換性がある。
+</p>
+
+<p>
+wchar_tは、内部型(underlying type)と呼ばれる、何らかの整数型と同じサイズ、符号、アライメント要求を持つ。この内部型は、実装に委ねられている。
+</p>
+
+<p>
+wchar_t型のひとつのオブジェクトは、実装がサポートするロケールの文字セットの任意の一文字を表現できる。
+</p>
+
+<p>
+wchar_tは、少なくとも、規格上はそうなっている。しかし、現実的には、そのような固定長の文字コードは、サポートするロケールと文字セットを大幅に限定しなければ、存在しない。たとえば、ある実装では、wchar_tは16bitのUTF-16の1単位を表現するようになっている。しかし、UTF-16の1単位は、Unicodeの文字セットの任意の一文字を表現できない。ある実装では32bitのUTF-32の1単位を表現するようになっているが、UTF-32も、1単位で任意の1文字を表せる文字のエンコード方式ではない。wchar_tの内部型が規格で規定されていないことにより、wchar_tの仕様は、移植性の問題を引き起こす。
+</p>
+
+<p>
+char16_t型は内部型uint_least16_t型と、char32_t型は内部型uint_least32_t型と、それぞれ等しい大きさ、符号、アライメント要求を持つ。
+</p>
+
+<p>
+bool型の取り得る値は、trueかfalseである。bool型には、signed, unsigned short, longといった変種は存在しない。
+</p>
+
+<p>
+bool, char, char16_t, char32_t, wchar_t、符号付き整数型と符号なし整数型をひっくるめて、整数型(integral typeもしくはinteger type)と呼ぶ。
+</p>
+
+<p>
+整数型の内部表現は、何らかの純粋な二進数であると規定されている。規格は、整数型の内部表現について実装依存を認めている。
+</p>
+
+<p>
+浮動小数点数型(floating point type)には、float, double, long doubleがある。doubleは少なくともfloatと同等以上の精度があり、long doubleはdoubleと同等以上の精度がある。
+</p>
+
+<p>
+浮動小数点数型が値を表現する方法は、実装依存である。整数型と浮動小数点数型をひっくるめて、演算型(arithmetic type)と呼ぶ。
+</p>
+
+<p>
+void型は、空の値を持つ。値を表現しない型のようなものだ。void型は常に不完全な型であり、完全にする方法はない。
+</p>
+
+<p>
+void型は、関数が戻り値を返さない場合に、戻り値の型として使われる。
+</p>
+
+<pre>
+// 戻り値を返さない関数
+void f() { }
+</pre>
+
+<p>
+あらゆる式は、明示的にvoid型か、CV修飾子つきのvoid型に型変換できる。
+</p>
+
+<pre>
+// int型の値0をvoid型の空の値に変換
+static_cast&lt;void&gt;(0) ;
+</pre>
+
+<p>
+void型の式が使える場所は、以下の通り。
+</p>
+
+<ul>
+<li>
+式文
+</li>
+
+<li>
+コンマ式のオペランド
+</li>
+
+<li>
+条件演算子の2つ目と3つ目のオペランド
+</li>
+<li>
+typeidのオペランド
+</li>
+
+<li>
+noexcept
+</li>
+
+<li>
+decltype
+</li>
+
+<li>
+戻り値の型がvoidの関数の本体のreturn文の中の式
+</li>
+
+<li>
+void型、CV修飾子つきのvoid型への型変換のオペランド
+</li>
+</ul>
+
+<pre>
+#include &lt;typeinfo&gt;
+
+// 呼び出すとvoid型の式になる関数
+void f() { }
+
+void g()
+{
+    f() ; // 式文
+    f() , f() ; // コンマ式のオペランド
+    true ? f() : f() ; // 条件演算子
+    typeid( f() ) ; // typeid
+    noexcept( f() ) ; // noexcept演算子
+    using type = decltype( f() ) ; // decltype
+    return f() ; // return文
+    static_cast&lt;void&gt;( f() ) ; // void型への型変換
+}
+</pre>
+
+<p>
+std::nullptr_t型の値は、nullポインター定数である。nullポインター定数には、nullptrという特別なキーワードのリテラルがある。sizeof(std::nullptr_t)はsizeof(void*)と等しくなる。
+</p>
+
+<p>
+たとえ、あるC++の実装で、これらの異なる型として認識される基本型の内部表現が同じだったとしても、型は異なるものと認識される。
+</p>
+
+</article>
 
 
 </article>
