@@ -25360,12 +25360,12 @@ struct Derived : Base
 struct X
 {
     // コメントは暗黙のオブジェクト仮引数の型
-    void f() &amp; // X &amp;
-    void f() const &amp; // X const &amp;
-    void f() volatile &amp; // X volatile &amp;
-    void f() const volatile &amp; // X const volatile &amp;
+    void f() &amp; ; // X &amp;
+    void f() const &amp; ; // X const &amp;
+    void f() volatile &amp; ; // X volatile &amp;
+    void f() const volatile &amp; ; // X const volatile &amp;
 
-    viod g() ; // X &amp;
+    void g() ; // X &amp;
 } ;
 </pre>
 
@@ -25377,10 +25377,10 @@ struct X
 struct X
 {
     // コメントは暗黙のオブジェクト仮引数の型
-    void f() &amp;&amp; // X &amp;&amp;
-    void f() const &amp;&amp; // X const &amp;&amp;
-    void f() volatile &amp;&amp; // X volatile &amp;&amp;
-    void f() const volatile &amp;&amp; // X const volatile &amp;&amp;
+    void f() &amp;&amp; ; // X &amp;&amp;
+    void f() const &amp;&amp; ; // X const &amp;&amp;
+    void f() volatile &amp;&amp; ; // X volatile &amp;&amp;
+    void f() const volatile &amp;&amp; ; // X const volatile &amp;&amp;
 } ;
 </pre>
 
