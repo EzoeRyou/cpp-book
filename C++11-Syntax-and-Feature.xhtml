@@ -24792,11 +24792,10 @@ struct Foo
 struct Foo
 {
     void f() ; // リファレンス修飾子の省略、暗黙にlvalueリファレンス
-    void f() &amp;&amp; // エラー、他の宣言でリファレンス修飾子が省略されている
+    void f() &amp;&amp; ; // エラー、他の宣言でリファレンス修飾子が省略されている
 
     void g() &amp; ; // OK
     void g() &amp;&amp; ; // OK
-
 } ;
 </pre>
 </li>
