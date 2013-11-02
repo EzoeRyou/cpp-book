@@ -25610,7 +25610,6 @@ struct Source
     operator Destination &amp;() { return obj ; }
 } ;
 
-
 struct Destination
 {
     Destination() { }
@@ -25619,13 +25618,12 @@ struct Destination
 
 Destination obj ;
 
-
 int main()
 {
     Source s ;
     Destination d ;
     d = s ; // オーバーロード解決、Source::operator Destination &amp;()
-    Source cs ;
+    Source const cs ;
     d = cs ; // オーバーロード解決、Destination::Destination( Source const &amp; ) 
 }
 </pre>
