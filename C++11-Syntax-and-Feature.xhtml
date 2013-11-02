@@ -4194,6 +4194,187 @@ volatile    &lt;   const volatile
 
 </article>
 
+<article>
+<h1 id="basic.lval"><a href="#basic.lval">lvalueとrvalue(Lvalues and rvalues)</a></h1>
+
+<p>
+lvalueとrvalueという用語は、C++の祖先であるC言語のそのまた祖先である、BCPLの頃から、慣習的に使われていた用語である。その本来の意味は、代入式の左右のオペランドに記述することができる値という意味であった。lvalueは代入式の左(left)に書くことができる値(value)であるからして、left valueであり、rvalueは右(right)に書けるのでright valueということだ。
+</p>
+
+<pre>
+int x ;
+x = 0 ;
+</pre>
+
+<p>
+この例で、xは代入式の左辺に書けるのでlvalueであり、0は右辺に書けるのでrvalueである。
+</p>
+
+<p>
+今日では、lvalueとrvalueは、その本来の意味を失い、全く別の意味で使われるようになっている。式の値を分類する用語として使われている。
+</p>
+
+<p>
+C++11では、式は、glvalueとrvalueの二種類に分けることができる。これは更に細分化でき、値は三種類の値に分類することができる。lvalueとxvalueとprvalueである。glvalueはlvalueとxvalueに細分化できる。rvalueはprvalueとxvalueに細分化できる。
+</p>
+
+<p>
+分類名の意味は、以下のとおりである。
+</p>
+
+<h1>lvalue</h1>
+<p>
+lvalueは、関数かオブジェクトである。
+</p>
+
+<p>
+lvalueは、名前付きの変数が指し示すオブジェクトや、ポインターを経由して指し示すオブジェクトなどが該当する。
+</p>
+
+<p>
+lvalueの名前の由来は、歴史的経緯でleft value(左辺値)であるが、C++では歴史的経緯の意味とは関係がない。
+</p>
+
+
+<h1>xvalue</h1>
+
+<p>
+xvalueは、オブジェクトである。xvalueのオブジェクトは大抵、その寿命が近いか、あるいは寿命に関心がないことを表現するために使われる。これにより、もしオブジェクトがxvalueであるならば、ムーブしても問題はないということを表現するために使われる。
+</p>
+
+<p>
+xvalueは、一部の式の結果や、rvalueリファレンスへの明示的なキャストなどが該当する。
+</p>
+
+<p>
+xvalueの名前の由来は、eXpiring value(消失値)である。これは、xvalueというのは寿命が近かったり、寿命に関心がなく、消失しても問題のない値であるという意味から名付けられた。
+</p>
+
+
+<h1>glvalue</h1>
+
+<p>
+glvalueは、lvalueとxvalueの総称である。
+</p>
+
+<p>
+glvalueの名前の由来は、generalized lvalue(一般化lvalue)である。
+</p>
+
+<h1>rvalue</h1>
+
+<p>
+rvalueは、xvalueとprvalueの総称である。xvalueの他には、一時オブジェクトや、リテラルの値(123や3.14やtrueなど)や、特定のオブジェクトに関連付けられていない値などが該当する。
+</p>
+
+<p>
+rvalueの名前の由来は、歴史的経緯で、right value(右辺値)であるが、C++では歴史的経緯の意味とは関係がない。
+</p>
+
+<h1>prvalue</h1>
+<p>
+prvalueは、rvalueのうちxvalueではないものである。これには、一時オブジェクトやリテラルの値や、特定のオブジェクトに関連付けられていない値などが該当する。例えば、関数呼び出しの戻り値で、型がリファレンスではないものもある。
+</p>
+
+<p>
+C++03までは、リファレンスは、単に「リファレンス」と呼ばれていた。C++11でいうlvalueリファレンスを意味した。C++03のリファレンスには、rvalueは束縛できなかった。
+</p>
+
+<pre>
+int f() { return 0 ; }
+
+int main()
+{
+    int &amp; lvalue_ref = f() ; // エラー
+}
+</pre>
+
+<p>
+ただし、C++では、constなlvalueリファレンスで、rvalueを束縛できるという
+</p>
+
+<pre>
+int f() { return 0 ; }
+
+int main()
+{
+    int const &amp; lvalue_ref = f() ; // OK
+}
+</pre>
+
+<p>
+しかし、C++にムーブの概念を持ち込むにあたって、rvalueを非constなリファレンスで束縛したいという需要が生まれた。そのため、従来のリファレンスを、lvalueリファレンスとし、新しくrvalueリファレンスを追加することになった。
+</p>
+
+<pre>
+int f() { return 0 ; }
+
+int main()
+{
+    int &amp;&amp; lvalue_ref = f() ; // OK
+}
+</pre>
+
+<p>
+rvalueリファレンスは、rvalueのみを束縛できるリファレンスである。rvalueである以上、寿命がすぐに尽きるか、あるいは、プログラマーはそのオブジェクトの寿命に関心を持たないと明示的に意思表示したとみなすことができる。
+</p>
+
+<p>
+そのため、rvalueリファレンスで束縛できたということは、その値の保持する所有権を横取りしても問題がないということになる。
+</p>
+
+<pre>
+class owner
+{
+private :
+    int * ptr ;
+public :
+    owner( int value )
+        : ptr( new int( value ) )
+    { }
+
+    // コピーコンストラクター
+    owner( owner const &amp; lref )
+        : ptr( new int( *lref.ptr ) ) 
+    { }
+
+    // ムーブコンストラクター
+    owner( owner &amp;&amp; rref )
+        : ptr ( rref.ptr )
+    {
+        rref.ptr = nullptr ;
+    }
+
+    ~owner( )
+    {
+        delete ptr ;
+    }
+} ;
+
+
+owner f()
+{
+    return owner(123) ;
+}
+
+int main()
+{
+    owner o = f() ;
+}
+</pre>
+
+<p>
+rvalueリファレンスの導入により、ストレージなどの確保、解放が必要なリソースや、あるいはファイルやスレッドなどのコピーという概念が存在しないリソースの所有権を、ムーブ(移動)することが可能になった。
+</p>
+
+<p>
+このコピーと対をなすムーブという新しい概念は、ムーブセマンティクス(Move Semantics)と呼ばれるプログラミング技法として知られている。プログラミング技法は本書の範疇ではないので、詳しくは解説しない。
+</p>
+
+
+</article>
+
+
 </article>
 
 </article>
