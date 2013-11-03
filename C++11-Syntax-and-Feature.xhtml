@@ -3664,8 +3664,25 @@ void operator delete[](void*, std::size_t) noexcept;
 
 <article>
 <h1 id="basic.stc.dynamic.deallocation"><a href="#basic.stc.dynamic.deallocation">解放関数(deallocation function)</a></h1>
+
 <p>
-TODO: 優先度が低い
+解放関数はクラスのメンバー関数か、グローバル関数でなければならない。グローバル名前空間以外の名前空間で解放関数を宣言したり、グローバル名前空間でstaticとして解放関数を宣言すると、プログラムはエラーとなる。
+</p>
+
+<p>
+解放関数の戻り値の型はvoid、最初の仮引数は、void *でなければならない。
+</p>
+
+<p>
+C++14では、解放関数が2個の仮引数を持ち、第二引数がstd::size_t型である場合、2つ目の仮引数には、確保したストレージのサイズが渡される。
+</p>
+
+<p>
+解放関数から例外を投げて抜けだした場合、挙動は未定義である。
+</p>
+
+<p>
+解放関数の1つ目の実引数がnullポインターでなければ、解放関数はポインターの指し示すストレージの解放を行う。
 </p>
 </article>
 
