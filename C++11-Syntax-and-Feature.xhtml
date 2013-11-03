@@ -18901,9 +18901,24 @@ PODとは、Plain Old Dataの略である。これは、C言語の構造体に�
 
 <article>
 <h1 id="class.name"><a href="#class.name">クラス名（Class names）</a></h1>
+
 <p>
-TODO:あまり深く解説しなくてもいい気がする。
+クラス宣言は、クラス名をスコープに導入する。クラス名は外側のスコープの名前を隠す。
 </p>
+
+<p>
+もし、クラス名が宣言されたスコープ内で、同名の変数、関数、enumが宣言された場合は、どちらの宣言もスコープに存在することになる。その場合、クラス名を使うには、<a href="#dcl.type.elab">複雑型指定子</a>を使う以外に方法がなくなる。
+</p>
+
+<pre>
+void name() { }
+class name { } ;
+
+name n ; // エラー、nameは関数名
+class name n ; // OK、複雑型指定子
+</pre>
+
+
 </article>
 
 <article>
