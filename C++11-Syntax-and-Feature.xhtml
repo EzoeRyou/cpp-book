@@ -3563,9 +3563,7 @@ main関数からreturnするか、std::exitを呼び出した場合、staticス�
 <article>
 <h1 id="basic.stc"><a href="#basic.stc">ストレージ(storage duration)</a></h1>
 
-<p>
-TODO:ここの説明は、優先度が低いため軽く済ませている。
-</p>
+
 
 <p>
 規格上、ストレージという用語は正しくなく、ストレージの有効期間(storage duration)という用語が正しいのだが、本書では多くの箇所で、簡単にするため、単にストレージという言葉を使っている。
@@ -5355,10 +5353,6 @@ bool b5 = &amp;x ; // true
 <article class="toplevel">
 <h1 id="expr"><a href="#expr">式（Expressions）</a></h1>
 
-<p class="editorial-note">
-TODO: FDIS後のcore issue 1054. Lvalue-to-rvalue conversions in expression statementsに対応
-</p>
-
 <p>
 式（expression）とは、演算子（operator）とオペランド（operand）を組み合わせたものである。オペランドとは、言わば、演算子を適用する引数である。式は、何らかの挙動をし、結果を返す。式の結果は、lvalueかxvalueかprvalueになる。
 </p>
@@ -7085,9 +7079,6 @@ int main()
 <article>
 <h1 id="expr.ref"><a href="#expr.ref">クラスメンバーアクセス（Class member access）</a></h1>
 
-<p>
-TODO: 詳細なvalue categoryを説明するかどうか。
-</p>
 
 <pre>
 クラスのオブジェクト . メンバー名
@@ -7178,9 +7169,6 @@ int main()
 }
 </pre>
 
-<p>
-TODO: value categoryについて。むしろlvalue and rvalueのところで説明すべきか
-</p>
 </article>
 
 <article>
@@ -10588,14 +10576,204 @@ int main()
 }
 </pre>
 
-<h1>定数式ではない式</h1>
+
 <p>
-以下に列挙する式は、定数式ではない式である。これらの式を含む式は、その値をコンパイル時に決定することができないので、定数式にはならない。
+注意：この解説は、C++14のドラフトN3797を参考にしている。正式なC++14規格では変更される可能性がある。また、C++11ではない。
 </p>
 
 <p>
-TODO: constant expressionとconstexpr specifierについては、まだ議論が多く、変更される可能性があるため、執筆を保留。
+ある式eを評価した際に、以下に挙げる式を評価しない場合、式eはコア定数式(core constant expression)である。
 </p>
+
+<ul>
+<li>
+this、ただし、eの一部として評価されるconstexpr関数かconstexprコンストラクター内を除く
+</li>
+
+<li>
+リテラルクラスのconstexprコンストラクター、constexpr関数、トリビアルデストラクターの暗黙の呼び出しを除く、関数の呼び出し
+</li>
+
+<li>
+未定義のconstexpr関数か未定義のconstexprコンストラクターの呼び出し
+</li>
+
+<li>
+<p>
+実装の制約を超える式
+</p>
+
+<p>
+実装の制約とは、仮引数やテンプレート仮引数の数の最大値のような、コンピューターが有限であることに起因する様々な制約。
+</p>
+</li>
+
+<li>
+<p>
+未定義の挙動を含む処理
+</p>
+
+<p>
+例えば、符号付き整数のオーバーフローや、一部のポインター演算や、ゼロ除算や、一部のシフト演算など。
+</p>
+</li>
+
+<li>
+<a href="#expr.prim.lambda">ラムダ式</a>
+</li>
+
+<li>
+<p>
+lvalueからrvalueへの変換、ただし以下の場合を除く
+</p>
+
+<ul>
+<li>
+<p>
+非volatileのglvalueの整数かenumの型が、初期化前か定数式による初期化後の非volatileのconstオブジェクトを参照する場合
+</p>
+
+<p>
+文字列リテラルによる配列が該当する
+</p>
+</li>
+
+<li>
+非volatileのglvalueが、constexprで定義された非volatileオブジェクトか、そのようなオブジェクトの変更可能なサブオブジェクを参照する場合
+</li>
+
+<li>
+非volatileのリテラル型のglvalueが、式eの初期化にともなって寿命が開始した非volatileオブジェクトを参照する時
+</li>
+</ul>
+
+</li>
+
+<li>
+lvalueからrvalueへの変換か、unionの使われていないメンバーかサブオブジェクトを参照するglvalueの変更
+</li>
+
+<li>
+<p>
+リファレンス型の変数かデータメンバーを参照する名前、ただし、リファレンスが以下のいずれかの方法で初期化された後の場合を除く。
+</p>
+
+<ul>
+<li>
+定数式で初期化された場合
+</li>
+
+<li>
+式eの評価とともに寿命が始まったオブジェクトの非staticデータメンバー
+</li>
+
+</ul>
+
+</li>
+
+<li>
+cv void *からオブジェクトへのポインター型への型変換
+</li>
+
+<li>
+dynamic_cast
+</li>
+
+<li>
+reinterpret_cast
+</li>
+
+<li>
+疑似デストラクター呼び出し
+</li>
+
+<li>
+オブジェクトの変更、ただし、式eの評価とともに寿命が始まった非volatileオブジェクトを参照する非volatileのリテラル型のlvalueに対して適用されたものを除く
+</li>
+
+<li>
+ポリモーフィックなクラス型のglvalueをオペランドに指定したtypeid式
+</li>
+
+<li>
+new式
+</li>
+
+<li>
+delete式
+</li>
+
+<li>
+結果が未規定となる比較演算子と等号、不等号演算子
+</li>
+
+<li>
+throw式
+</li>
+
+</ul>
+
+
+<p>
+式が整数型かスコープなしenum型で、暗黙にprvalueに型変換でき、型変換した式がコア定数式であるような式を、整数定数式(integral constant expression)という。
+</p>
+
+<p>
+このような整数定数式は、配列の宣言の添字や、ビットフィールドや、enum初期化子や、アライメントなどに使える。
+</p>
+
+<p>
+T型に変換された定数式(converted constant expression)とは、暗黙にT型のprvalueに変換された式のことで、その変換された式がコア定数式で、暗黙の型変換には、ユーザー定義型変換、lvalueからrvalueへの変換、整数のプロモーション、<a href="#dcl.init.list">ナロー変換</a>以外の整数の型変換だけが使われているものを言う。
+</p>
+
+<p>
+変換された定数式は、new式、case式、内部型が固定されたenum初期化子、配列の範囲など、整数かenumの非型テンプレート実引数など、型変換が必要な定数式の文脈で使われる。
+</p>
+
+<p>
+ここまで解説して、始めて定数式の定義ができるようになる。
+</p>
+
+<p>
+定数式(constant expression)とはコア定数式のうち、glvalueのstaticストレージか、関数か、prvalueコア定数式である。
+</p>
+
+<p>
+prvalueコア定数式の場合、その値のオブジェクトとサブオブジェクトが、以下の条件をすべて満たす場合のみ、定数式になる。
+</p>
+
+<ul>
+<li>
+リファレンス型の非staticデータメンバーはすべて、staticストレージ上のオブジェクトか、関数を参照していること
+</li>
+
+<li>
+オブジェクトかサブオブジェクトがポインター型の場合、その値は、staticストレージ上のオブジェクトへのアドレスか、staticストレージ上のオブジェクトを超えたアドレスか、関数のアドレスか、nullポインターであること
+</li>
+</ul>
+
+<p>
+C++規格は、浮動小数点数の計算精度を規定していないため、C++の実装でコンパイル時と実行時で、浮動小数点数の計算結果が変わったとしても、その実装は規格準拠である。
+</p>
+
+<pre>
+bool f()
+{
+    char array[ 1 + int( 1 + 0.2 - 0.1 - 0.1 ) ] ; // コンパイル時評価される
+    int size = 1 + int( 1 + 0.1 - 0.1 - 0.1 ) ; // 実行時評価される可能性がある
+
+    return sizeof( array ) == size ;
+}
+</pre>
+
+<p>
+このような関数fの戻り値がtrueかfalseか、C++規格は規定することができない。
+</p>
+
+<p>
+リテラルクラス型の式が、整数定数式を必要とする文脈で用いられた場合、その式は文脈上、整数型かスコープなしenum型に暗黙に変換される。その場合に使われる変換関数は、constexprでなければならない。
+</p>
+
 </article>
 </article>
 
@@ -13959,8 +14137,8 @@ GlobalEnum e2 = b ;
 int main()
 {
     enum LocalEnum { c, d } ;
-    GlobalEnum e1 = c ;
-    GlobalEnum e2 = d ;
+    LocalEnum e1 = c ;
+    LocalEnum e2 = d ;
 }
 </pre>
 
