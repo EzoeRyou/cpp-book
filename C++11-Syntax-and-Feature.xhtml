@@ -560,7 +560,7 @@ Foo * foo_pointer = new Foo ;
 <h1 id="intro.execution"><a href="#intro.execution">プログラムの実行（Program execution）</a></h1>
 
 <p>
-TODO:
+この項目の多くは、スレッドの競合と同期に関する話なので、省略する。
 </p>
 </article>
 
@@ -16002,9 +16002,6 @@ int a[] = { 1, 2, 3 } ; // 型はint [3]
 <article>
 <h1 id="dcl.fct"><a href="#dcl.fct">関数（Functions）</a></h1>
 
-<p class="editorial-note">
-TODO: さらに詳しく説明する可能性あり。
-</p>
 
 <section>
 <h1>関数の宣言方法</h1>
@@ -16454,19 +16451,16 @@ void f( int ) { } // 定義
 <article>
 <h1 id="dcl.fct.def"><a href="#dcl.fct.def">関数の定義（Function definitions）</a></h1>
 
-<p class="editorial-note">
-TODO: FDIS後のdefault化とdelete定義の関数の本体への移行に対応すること。
-</p>
 
 <pre>
 関数の定義:
     関数の宣言 関数の本体
-    関数の宣言 = default ;
-    関数の宣言 = delete ;
 
 関数の本体:
     コンストラクター初期化子<sub>opt</sub> 複合文
     関数tryブロック
+    = default ;
+    = delete ;
 </pre>
 
 <p>
@@ -17689,9 +17683,6 @@ char str[10] = { 'h', 'e', 'l', 'l', 'o', '\0', 0, 0, 0, 0 } ;
 <article>
 <h1 id="dcl.init.ref"><a href="#dcl.init.ref">リファレンス（References）</a></h1>
 
-<p class="editorial-note">
-TODO: FDIS後に見直し。core issue 1058.If the initializer expression is a string literal (2.14.5 [lex.string]), the program is ill-formed.
-</p>
 
 <p>
 T &amp;を、「T型へのlvalueリファレンス」という。T &amp;&amp;を、「T型へのrvalueリファレンス」という。これらを二つまとめて、「T型へのリファレンス」という。lvalueリファレンスは、lvalueへのリファレンスであり、lvalueで初期化する。rvalueリファレンスは、rvalueへのリファレンスであり、rvalueで初期化する。そのため、このような名前になっている。
