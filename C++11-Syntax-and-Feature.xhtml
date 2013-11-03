@@ -29073,13 +29073,35 @@ struct Y
 パターンはアトリビュート
 </p>
 
+<p>
+例えば、以下のような型を引数に取る実装依存のアトリビュートトークンがあったとする
+</p>
+
+<pre>
+[[ token( 型 ) ]]
+</pre>
+
+<p>
+この場合、可変長テンプレートで、パラメーターパックとして受け取った型をすべて渡したい場合、以下のように書ける。
+</p>
+
+
 <pre>
 template &lt; typename ... pack &gt;
 struct X
 {
-    [[ pack ... ]] ;
-
+    [[ token( pack )... ]] ;
 } ;
+
+void f()
+{
+// [[ token( int ) ]]
+    X&lt; int &gt; a ;
+// [[ token( int ), token( int ) ) ]]
+    X&lt; int, int &gt; b ;
+// [[ token( char ), token( short ), token( int ), token( long ) ]]
+    X&lt; char, short, int, long &gt; c ;
+}
 </pre>
 
 </li>
