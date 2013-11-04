@@ -11427,6 +11427,39 @@ label:
 <p>
 と書くのに等しい。
 </p>
+
+<p>
+while文の条件の中で宣言された変数は、ループの繰り返しのたびに、破棄されてから再び生成される。
+</p>
+
+<pre>
+#include &lt;iostream&gt;
+
+class nonzero
+{
+private :
+    int value ;
+
+public :
+    nonzero( int i )
+        : value(i)
+    { std::cout &lt;&lt; "constructed" &lt;&lt; std::endl ; }
+    ~nonzero()
+    { std::cout &lt;&lt; "destructed" &lt;&lt; std::endl ;}
+
+    operator bool() { return value != 0 ; }
+} ;
+
+int main()
+{
+    int i = 3 ;
+
+    while ( nonzero n = i )
+    {
+        --i ;
+    }
+}
+</pre>
 </article>
 
 <article>
