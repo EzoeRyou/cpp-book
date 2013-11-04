@@ -6938,7 +6938,7 @@ int main()
 
 <pre>
 int() ; // int型の0で初期化された値
-double() : // double型の0で初期化された値
+double() ; // double型の0で初期化された値
 
 struct C {} ;
 C() ; // デフォルトコンストラクターが呼ばれたCの値
@@ -31098,7 +31098,7 @@ using MyVec = std::vector&lt; T, MyAlloc &gt; ;
 <pre>
 void f()
 { // 関数のブロックスコープ
-    template &lt; typename T &gt; using A = T : // エラー
+    template &lt; typename T &gt; using A = T ; // エラー
 }
 </pre>
 
