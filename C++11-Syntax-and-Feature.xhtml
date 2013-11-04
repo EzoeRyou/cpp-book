@@ -31208,7 +31208,7 @@ void f()
 template &lt; typename T &gt;
 struct X : T::type // OK
 {
-    X() : T::type // OK
+    X() : T::type() // OK
     { } 
 } ;
 </pre>
