@@ -32082,8 +32082,10 @@ struct X
 
 // 汎用的な定義
 template &lt; typename T &gt;
-int X&lt;T&gt;::data = 0 ;
+int X&lt;T&gt;::d1 = 0 ;
 
+template &lt; typename T &gt;
+T X&lt;T&gt;::d2 = {} ;
 
 template &lt; &gt;
 double X&lt;int&gt;::d1 ; // エラー、型が宣言と一致しない
