@@ -31793,7 +31793,7 @@ void func( T ) ;
 <pre>
 // func.cpp
 // 関数テンプレートfuncの定義
-#include &lt;func.h&gt;
+#include "func.h"
 
 template &lt; typename T &gt;
 void func( T ) { }
@@ -31808,7 +31808,7 @@ extern template void func( double ) ;
 
 // このソースファイルmain.cppには、
 // 関数テンプレートfuncの宣言のみ導入
-#include &lt;func.h&gt;
+#include "func.h"
 
 int main()
 {
