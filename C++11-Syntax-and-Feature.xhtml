@@ -33878,7 +33878,7 @@ int main()
 {
     try
     {
-        throw 0 ; 例外オブジェクトの型はint
+        throw 0 ; // 例外オブジェクトの型はint
     }
     catch ( double d ) { }
     catch ( float f ) { }
@@ -34101,7 +34101,7 @@ int main()
     {
         throw 0 ; // 例外オブジェクトの型はint
     }
-    catch ( int * ) // 適合しない
+    catch ( int * ) { } // 適合しない
 }
 </pre>
 
