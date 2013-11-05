@@ -1,4 +1,4 @@
-?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html >
 <html xmlns="http://www.w3.org/1999/xhtml" >
 
@@ -25304,7 +25304,282 @@ unionではないクラスの暗黙に定義されたコピー/ムーブコン�
 union型の暗黙に定義されたコピー/ムーブコンストラクターは、union型のオブジェクトの内部表現をコピーする。
 </p>
 
+<p>
+ユーザー宣言されたクラスXのコピー/ムーブ代入演算子、X::operator =は、クラスXの非static、非テンプレートのメンバー関数で、仮引数を一つだけ取り、その型はX, X &amp;, const X &amp;, volatile X &amp; const volatile X &amp;でなければならない。
+</p>
+
+<pre>
+struct X
+{
+    X &amp; operator = ( X &amp; ) ;
+    X &amp; operator = ( X const &amp; ) ;
+    X &amp; operator = ( X volatile &amp; ) ;
+    X &amp; operator = ( X const volatile &amp; ) ;
+} ;
+</pre>
+
+<p>
+ユーザー宣言されるコピー/ムーブ代入演算子の戻り値の型は制限されていない。
+</p>
+
+<pre>
+struct X
+{
+    // OK
+    void operator = ( X const &amp; ) { }
+} ;
+
+void f()
+{
+    X x1 ;
+    X x2 ;
+    x1 = x2 ; // OK、結果の型はvoid
+}
+</pre>
+
+<p>
+コンストラクターと同じく、代入演算子でも、代入演算子のテンプレートは、コピー/ムーブ代入演算子ではない。ただし、コンストラクターと同じように、テンプレートの特殊化がコピー/ムーブ代入演算子と同じ仮引数になった場合は、オーバーロード解決の候補となり、非テンプレートのコピー/ムーブ代入演算子より優先して選択されることもある。このため、代入演算子のテンプレートは、コピー風/ムーブ風の代入演算子と非公式に呼ばれている。
+</p>
+
+<pre>
+struct X
+{
+    X() { }
+
+    X &amp; operator = ( X const &amp; ) ; // #1
+    template &lt; typename T &gt;
+    X &amp; operator = ( T &amp; ) ; // #2
+} ;
+
+void f()
+{
+    X x1 ;
+    X x2 ;
+    x1 = x2 ; // #2が呼ばれる
+}
+</pre>
+
+<p>
+もし、クラス定義の中でコピー代入演算子が明示的に宣言されていない場合、コピー代入演算子は暗黙的に宣言される。
+</p>
+
+<pre>
+struct X
+{
+// コピー代入演算子が暗黙的に宣言される
+} ;
+</pre>
+
+<p>
+もし、クラス定義で、ムーブコンストラクター、ムーブ代入演算子、コピーコンストラクター、デストラクターがユーザー宣言されていた場合、暗黙に宣言されたコピー代入演算子は、delete定義される。
+</p>
+
+<pre>
+struct A
+{
+// コピー代入演算子はdelete定義される
+    A( A &amp;&amp; ) ; 
+} ;
+
+struct B
+{
+// コピー代入演算子はdelete定義される
+    B &amp; operator = ( B &amp;&amp; ) ;
+} ;
+</pre>
+
+<p>
+C++11では、コピーコンストラクター、デストラクターがユーザー宣言されていた場合、コピー代入演算子はdefault化される。この挙動は非推奨であり、将来的には取り除かれる。このような非推奨の機能に頼ったコードを書いてはならない。
+</p>
+
+<pre>
+// このようなコードを書いてはならない
+
+struct X
+{
+// C++11では、コピー代入演算子は暗黙にdefault化される
+// この機能は非推奨であり、使ってはならない
+
+    X( X const &amp; ) ;
+    ~X() ;
+} ;
+</pre>
+
+<p>
+暗黙に宣言される、クラスXのコピー代入演算子は、以下の条件、
+</p>
+
+<ul>
+<li>
+<p>
+クラスXの直接の基本クラスBが、仮引数の型としてconst B &amp;, const volatile B &amp;, Bのいずれかであるコピー代入演算子を持つ
+</p>
+
+<pre>
+struct B1 { B1 &amp; operator = ( const B &amp; ) ; } ;
+struct B2 { B2 &amp; operator = ( const volatile B &amp; ) ; } ;
+struct B3 { B3 &amp; operator = ( B ) ; } ;
+
+struct X : B1, B2, B3 { } ;
+</pre>
+
+</li>
+
+<li>
+Xの非staticデータメンバー、もしくは配列がすべて、型をMとおくと、仮引数の型がconst M &amp;, const volatile M &amp;, Mであるコピー代入演算子を持つ
+</li>
+</ul>
+
+<p>
+をすべて満たす場合、
+</p>
+
+<pre>
+X &amp; X::operator = ( const X &amp; )
+</pre>
+
+<p>
+の形を取る。
+</p>
+
+<p>
+上の条件を満たさない場合、暗黙に宣言されるクラスXのコピー代入演算子の形は、
+</p>
+
+<pre>
+X &amp; X::operator = ( X &amp; )
+</pre>
+
+<p>
+となる。
+</p>
+
+<p>
+クラスXのユーザー宣言されるムーブ代入演算子、X::operator =は、非static、非テンプレートのメンバー関数で、仮引数を一つだけ取り、その型は、X &amp;&amp;, const X &amp;&amp;, volatile X &amp;&amp;, const volatile X &amp;&amp;でなければならない。
+</p>
+
+<p>
+あるクラスXの定義でムーブ代入演算子が明示的に宣言されていない場合は、以下の条件をすべて満たした時、暗黙的にムーブ代入演算子が宣言される。
+</p>
+
+<ul>
+<li>
+クラスXはユーザー宣言されたコピーコンストラクターを持たない
+</li>
+
+<li>
+クラスXはユーザー宣言されたムーブコンストラクターを持たない
+</li>
+
+<li>
+クラスXはユーザー宣言されたコピー代入演算子を持たない
+</li>
+
+<li>
+クラスXはユーザー宣言されたデストラクターを持たない
+</li>
+
+<li>
+ムーブ代入演算子は暗黙にdelete定義されていない
+</li>
+</ul>
+
+<p>
+暗黙に宣言されたクラスXのムーブ代入演算子は、以下の形を取る。
+</p>
+
+<pre>
+X &amp; X::operator = ( X &amp;&amp; )
+</pre>
+
+<p>
+暗黙に宣言されたクラスXのコピー/ムーブ代入演算子は、X &amp;型の戻り値を返す。戻り値として返されるのは代入演算子が呼ばれたクラスのオブジェクトへのリファレンスである。暗黙に宣言されたコピー/ムーブ代入演算子は、クラスのinline publicメンバーとなる。
+</p>
+
+<p>
+デフォルト化されたクラスXのコピー/ムーブ代入演算子は、クラスXが以下のいずれかのメンバーを持つ時、それぞれ対応するコピー/ムーブ代入演算子が、delete定義される。
+</p>
+
+<ul>
+<li>
+<p>
+クラスXがunion風クラスで、その共用メンバーに、非トリビアルなコピー/ムーブ代入演算子があるとき
+</p>
+
+<p>
+<a href="#class.union">union風クラス</a>とは、unionか無名unionを含むクラスである。
+</p>
+
+<pre>
+// 非トリビアルなコピー代入演算子を持つ型
+struct S
+{
+    S &amp; operator = ( S const &amp; ) { }
+} ;
+
+union U1 { S s ; } ;
+struct U2
+{
+    union { S s ; } ;
+} ;
+
+int main()
+{
+    U1 a ;
+    U1 b ;
+    a = b ; // エラー、コピー代入演算子がdelete定義されている
+
+    U2 c ;
+    U2 d ;
+    c = d ; // エラー、コピー代入演算子がdelete定義されている
+}
+</pre>
+
+</li>
+
+<li>
+<p>
+const修飾された非クラスの、型か配列型を、非staticデータメンバーとして持つ場合
+</p>
+
+<pre>
+struct S
+{
+    const int member ;
+    const int array[10] ;
+} ;
+</pre>
+</li>
+
+<li>
+リファレンス型の非staticデータメンバーを持つ場合
+</li>
+
+<li>
+<p>
+オーバーロード解決の結果、コピー/ムーブ代入できないクラス型を非staticデータメンバーとして持つ場合。
+</p>
+
+<p>
+コピー/ムーブ代入できないというのは、オーバーロード解決の結果が曖昧であるか、最適候補がdeleted定義であるか、アクセス指定により、クラスXのデフォルト代入演算子からアクセスできない場合をいう。以下同じ
+</p>
+</li>
+
+<li>
+直接、あるいはvirtualな基本クラスが、オーバーロード解決の結果、コピー/ムーブ代入できない場合。
+</li>
+
+</ul>
+
+<p>
+デフォルト化されたムーブ代入演算子がdelete定義された場合、オーバーロード解決では無視される。
+</p>
+
+<p>
+</p>
+
 <p class="editorial-note">
+
 TODO:あとで書く
 </p>
 </article>
