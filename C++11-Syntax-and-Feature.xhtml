@@ -32544,14 +32544,6 @@ struct Outer_class
     void member_function_template() { }
 } ;
 
-// 明示的特殊化
-template &lt; &gt; // クラス
-struct Outer_class
-{
-    template &lt; typename T &gt;
-    void member_function_template() { }
-} ;
-
 // メンバー関数テンプレートの明示的特殊化
 template &lt; &gt;
 void Outer_class::member_function_template&lt;int&gt;()
