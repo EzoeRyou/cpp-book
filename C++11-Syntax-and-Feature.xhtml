@@ -33393,9 +33393,7 @@ int main()
 
 <article>
 <h1 id="temp.deduct"><a href="#temp.deduct">テンプレートの実引数推定(Template argument deduction)</a></h1>
-<p class="todo" >
-詳細は複雑で、時間がないため、間に合わせの簡易的な解説。また、partial orderingも解説しなければならない。
-</p>
+
 <p>
 関数テンプレートの特殊化が参照されるさいには、テンプレート仮引数にはすべて、対応するテンプレート実引数がなければならない。テンプレート実引数は、明示的に指定することもできるが、関数テンプレートの場合は、文脈から推定させることができる。これを、テンプレートの実引数推定(argument dedcution)という。
 </p>
@@ -33488,6 +33486,49 @@ int main()
 </p>
 </li>
 </ul>
+</article>
+
+<article>
+<h1 id="partial-ordering"><a href="#partial-ordering">半順序(partial ordering)</a></h1>
+
+<p class="todo">
+より詳細な解説には、時間が必要。
+</p>
+
+<p>
+複数のテンプレートの特殊化のうち、どの特殊化が、テンプレート実引数に対して、最も特殊であるかを決定することを、半順序(partial ordering)という。
+</p>
+
+<pre>
+// #1
+template &lt; typename T &gt;
+struct S { } ;
+
+// #2
+template &lt; typename T &gt;
+struct S&lt; T * &gt; { } ;
+
+// #3
+template &lt; typename T &gt;
+struct &lt; T const * &gt; { } ;
+
+int main()
+{
+    S&lt;int&gt; s1 ; // #1
+    S&lt;int *&gt; s2 ; // #2
+    S&lt;int const *&gt; s3 ; // #3
+}
+</pre>
+
+<p>
+半順序のルールは複雑だが、簡単に説明すると、CV修飾子、ポインター型、リファレンス型、配列型、関数型、テンプレートなどの、様々な型のパターンを再帰的に一致させていき、もっとも特殊なものを決定する。
+</p>
+
+<p>
+この詳細は、通常のプログラマーの常識に合うように、複雑に定義されている。
+</p>
+
+
 </article>
 
 </article>
