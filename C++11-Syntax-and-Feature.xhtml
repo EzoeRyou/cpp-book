@@ -33375,9 +33375,107 @@ int main()
 </pre>
 
 </article>
-<p class="todo">
-partial orderingの解説。
+
+
+<article>
+<h1 id="temp.deduct"><a href="#temp.deduct">テンプレートの実引数推定(Template argument deduction)</a></h1>
+<p class="todo" >
+詳細は複雑で、時間がないため、間に合わせの簡易的な解説。また、partial orderingも解説しなければならない。
 </p>
+<p>
+関数テンプレートの特殊化が参照されるさいには、テンプレート仮引数にはすべて、対応するテンプレート実引数がなければならない。テンプレート実引数は、明示的に指定することもできるが、関数テンプレートの場合は、文脈から推定させることができる。これを、テンプレートの実引数推定(argument dedcution)という。
+</p>
+
+<pre>
+template &lt; typename T &gt;
+void f( T ) { }
+
+int main()
+{
+    f( 0 ) ; // f&lt;int&gt;
+    f( 0.0 ) ; // f&lt;double&gt;
+    f( "hello" ) ; // f&lt;char const *&gt;
+}
+</pre>
+
+<p>
+通常の文字列リテラルの場合の型は、関数の仮引数に渡す際の変換の都合上、char const *となる。
+</p>
+
+<p>
+実引数の推定方法は、できるだけ普通のプログラマーの常識に合わせるために、とても複雑になっている。
+</p>
+
+<p>
+テンプレートの実引数推定は、関数呼び出し以外の文脈でも行われる。実引数推定が行われる文脈は以下の通り。
+</p>
+
+<ul>
+<li>
+<p>
+関数呼び出しの文脈
+</p>
+
+<pre>
+template &lt; typename T &gt;
+void f( T ) { }
+
+int main()
+{
+    f( 0 ) ; // 実引数推定、f&lt;int&gt;
+    f( 0.0 ) ; // 実引数推定、f&lt;double&gt;
+}
+</pre>
+</li>
+
+<li>
+<p>
+関数のアドレスを得る文脈
+</p>
+
+<pre>
+template &lt; typename T &gt;
+void f( T ) { }
+
+int main()
+{
+    // 実引数推定、f&lt;int&gt;
+    void (*ptr)(int) = &amp;f ;
+    // 実引数推定、f&lt;double&gt;
+    void (*ptr)(double) = &amp;f ; //
+}
+</pre>
+</li>
+
+<li>
+<p>
+変換関数の文脈
+</p>
+
+<pre>
+struct S
+{
+    template &lt; typename T &gt;
+    operator T() { return T() ; }
+} ;
+
+int main()
+{
+    S s ;
+    // 実引数推定、S::operator int
+    int a = s ;
+    // 実引数推定、S::operator double
+    double b = s ;
+}
+</pre>
+
+<p>
+実は、変換関数テンプレートには、明示的にテンプレート実引数を指定する方法がないので、実引数推定が唯一の特殊化を参照する方法である。
+</p>
+</li>
+</ul>
+</article>
+
 </article>
 
 
