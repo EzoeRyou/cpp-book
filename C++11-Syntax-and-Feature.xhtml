@@ -15788,7 +15788,7 @@ int main()
     S w( int(d) ); // S(int)型の関数の宣言、dは仮引数名、無駄な括弧
     S x( int() ); // S(int)型の関数の宣言、仮引数名の省略、無駄な括弧
 
-    S y( static_cast&lt;&gt;(d) ); // S型の変数yの宣言
+    S y( static_cast&lt;int&gt;(d) ); // S型の変数yの宣言
     S z = int(d); // S型の変数zの宣言
 }
 </pre>
