@@ -15954,7 +15954,7 @@ void func( void ) { } // 型はvoid (void)
 void g()
 {
     void (*ptr_func)( void ) = &amp;func ;
-    ref_func() ; // 関数呼び出し
+    ptr_func() ; // 関数呼び出し
 
     int array[5] ; // 型はint [5]
     int (*ptr_array)[5] = &amp;array ;
