@@ -16667,11 +16667,11 @@ auto f() -&gt; int [5] ;
 
 <pre>
 // OK、ポインター
-auto f() -&gt; void (*)(void);
-auto f() -&gt; int (*)[5] 
+auto f() -&gt; void (*)(void) ;
+auto f() -&gt; int (*)[5] ;
 // OK、リファレンス
-auto f() -&gt; void (&amp;)(void);
-auto f() -&gt; int (&amp;)[5]
+auto f() -&gt; void (&amp;)(void) ;
+auto f() -&gt; int (&amp;)[5] ;
 </pre>
 
 
