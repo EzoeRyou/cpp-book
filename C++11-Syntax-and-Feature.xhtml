@@ -165,7 +165,47 @@ table, th, td
 <![CDATA[
 "use strict"  ;
 
+function find_heading_at(headings, y)
+{
+    if ( !headings.length || y < headings[0].offsetTop )
+        return null ;
 
+    var i = 0 ;
+    var j = headings.length ;
+    while ( j - i > 1 )
+    {
+        var k = Math.floor((i + j) / 2) ;
+        if ( headings[k].offsetTop <= y )
+            i = k ;
+        else
+            j = k ;
+    }
+
+    return headings[i] ;
+}
+
+function setup_heading_scroll_handler()
+{
+    if ( !window.history || !history.pushState )
+        return ;
+
+    var headings = Array.prototype.slice.call(
+        document.querySelectorAll("h1[id]"));
+    headings.sort(function(left, right) {
+        return left.offsetTop - right.offsetTop ;
+    }) ;
+
+    document.addEventListener("scroll", function() {
+        var current_heading = find_heading_at(headings, window.scrollY) ;
+        var id = "" ;
+        if ( current_heading )
+            id = current_heading.getAttribute("id") ;
+        if ( location.hash.replace(/^#/, "") !== id )
+        {
+            history.replaceState(null, null, "#" + id) ;
+        }
+    }, false ) ;
+}
 
 // helper functions
 // calculate nth <li> child element from parent node.
@@ -281,6 +321,7 @@ function listener()
 {
     generate_index() ;
     add_chapter_numbers() ;
+    setup_heading_scroll_handler() ;
 }
 
 
