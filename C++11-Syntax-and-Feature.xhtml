@@ -17852,7 +17852,8 @@ struct S
     int : 8 ; // 無名ビットフィールド
     int z ;
 } ;
-static int S::static_data_member ;
+
+int S::static_data_member ;
 
 S s = { 1, 2, 3 } ;
 // s.x = 1, s.y = 2, s.z = 3
