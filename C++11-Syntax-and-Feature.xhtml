@@ -18170,7 +18170,7 @@ int main()
     Derived derived ;
     Base &amp; r3 = derived ;
 
-    int const const_object ;
+    int const const_object = 0 ;
     // OK
     int const &amp; r5 = const_object ;
     int const volatile &amp; r6 = const_object;
@@ -18203,7 +18203,7 @@ int main()
     Base base ;
     Derived &amp; r3 = base ; // エラー、派生クラスは基本クラスに対してリファレンス互換ではない
 
-    int const ci ;
+    int const ci = 0 ;
     int &amp; r4 = ci ; // エラー、CV修飾子が少ないので、リファレンス互換ではない
 } ;
 </pre>
