@@ -32705,6 +32705,28 @@ template &lt; &gt;
 struct S&lt; int &gt; { } ;
 </pre>
 
+<p>
+明示的実体化に指定する名前には、通常のアクセス指定は行われない。例えば、テンプレート実引数や関数宣言子に、アクセス指定にprivateな名前を指定することもできる。
+</p>
+
+<pre>
+template &lt; typename T, typename C,  T C::* mem_ptr &gt;
+struct temp { } ;
+
+struct X
+{
+private :
+    int private_member ;
+} ;
+
+// 明示的実体化
+// OK、通常のアクセス指定は行われない
+extern template struct temp&lt; int, X, &amp;X::private_member &gt; ; 
+
+// 暗黙の実体化を伴う変数宣言
+// エラー、privateメンバーの使用
+temp&lt; int, X, &amp;X::private_member &gt; t ;
+</pre>
 
 <p>
 明示的実体化を使えば、プログラム中のテンプレートを必要とするソースファイルすべてにトークン列が一致するテンプレートの完全な定義を持ち込む必要がなくなる。
