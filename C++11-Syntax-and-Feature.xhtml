@@ -32693,6 +32693,19 @@ extern template struct X&lt;int&gt; ;
 同じテンプレート実引数に対する明示的特殊化の前に明示的実体化が現れた場合はエラーである。
 </p>
 
+<pre>
+template &lt; typename T &gt;
+struct S { } ;
+
+// エラー、同じテンプレート実引数に対する明示的実体化
+extern template struct S&lt; int &gt; ;
+
+// エラー、明示的特殊化の前に同じ明示的実体化
+template &lt; &gt;
+struct S&lt; int &gt; { } ;
+</pre>
+
+
 <p>
 明示的実体化を使えば、プログラム中のテンプレートを必要とするソースファイルすべてにトークン列が一致するテンプレートの完全な定義を持ち込む必要がなくなる。
 </p>
