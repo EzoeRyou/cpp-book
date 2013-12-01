@@ -30052,6 +30052,71 @@ int main( )
 </pre>
 
 <p>
+パック展開のパターンの中には、未展開のパラメータパック名がひとつは存在しなければならない。
+</p>
+
+<pre>
+template &lt; typename ... Types &gt;
+struct seq { } ;
+
+template &lt; typename ... Types &gt;
+struct S
+{
+    using t1 = seq&lt; Types ... &gt; ; // OK
+    using t2 = seq&lt; Types ... ... &gt; ; // エラー、未展開のパラメーターパックがない
+} ;
+</pre>
+
+<p>
+未展開のパラメーターパックをそのまま使うことはできない。
+</p>
+
+<pre>
+template &lt; typename ... Types &gt;
+struct seq { } ;
+
+template &lt; typename ... Types &gt;
+struct S
+{
+    using t1 = seq&lt; Types &gt; ; // エラー、未展開のパラメーターパック
+} ;
+</pre>
+
+<p>
+もし、パック展開のパターンに、複数のパラメーターパックがある場合は、それぞれのパラメーターパックの数が等しくなければならない。
+</p>
+
+<pre>
+template &lt; int ... &gt;
+struct int_seq { } ;
+
+template &lt; typename ... Types &gt;
+void f( Types ... ) { }
+
+template &lt;
+    int ... Is,
+    typename ... Types 
+&gt;
+void g( int_seq&lt; Is... &gt;, Types ... args )
+{
+    // パラメーターパックargsとIsがひとつのパターンに存在
+    f( args(Is)... ) ;
+} ;
+
+int h( int x ) { return x ; } 
+
+int main()
+{
+    // OK、パラメーターパックargsとIsの個数が一致
+    g( int_seq&lt; 1, 2, 3 &gt;(), &amp;h, &amp;h, &amp;h ) ;
+    // f( h(1), h(2), h(3) ) と展開される
+
+    // エラー、パラメーターパックの個数が不一致
+    g( int_seq&lt; 1, 2 &gt;(), &amp;h ) ;
+}
+</pre>
+
+<p>
 パック展開できる文脈は限られているが、一般に、型や式をコンマで区切って記述する文脈に書くことができる。
 </p>
 
