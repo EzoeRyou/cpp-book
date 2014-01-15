@@ -17074,25 +17074,25 @@ void call_i()
 </p>
 
 <pre>
-struct Boolen
+struct Boolean
 {
-    Boolen( ) = delete ;
-    Boolen( bool ) { }
+    Boolean( ) = delete ;
+    Boolean( bool ) { }
 
     template &lt; typename T &gt;
-    Boolen( T ) = delete ;
+    Boolean( T ) = delete ;
 } ;
 
 int main()
 {
-    Boolen a = true ; // OK
-    Boolen b = 123 ; // エラー
-    Boolen c = &amp;a ; // エラー
+    Boolean a = true ; // OK
+    Boolean b = 123 ; // エラー
+    Boolean c = &amp;a ; // エラー
 }
 </pre>
 
 <p>
-Boolenクラスは、必ず、ひとつのbool型の引数で初期化しなければならない。このクラスの初期化の際に、bool以外の型を渡すと、テンプレートのインスタンス化とオーバーロード解決により、関数テンプレート版のコンストラクターが優先される。しかし、定義は削除されているため、エラーとなる。結果的に、暗黙の型変換を禁止しているのと同じ意味となる。そのため、意図しない数値やポインターでの初期化という、つまらないバグを防げる。
+Booleanクラスは、必ず、ひとつのbool型の引数で初期化しなければならない。このクラスの初期化の際に、bool以外の型を渡すと、テンプレートのインスタンス化とオーバーロード解決により、関数テンプレート版のコンストラクターが優先される。しかし、定義は削除されているため、エラーとなる。結果的に、暗黙の型変換を禁止しているのと同じ意味となる。そのため、意図しない数値やポインターでの初期化という、つまらないバグを防げる。
 </p>
 
 <p>
