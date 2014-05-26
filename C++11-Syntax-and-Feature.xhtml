@@ -3460,8 +3460,7 @@ int main( int, char *[] ) ;
 2つ目の形では、慣習的に、関数の1つ目の仮引数はargcと呼ばれていて、2つ目の仮引数はargvと呼ばれている。argcはプログラムの実行される環境で、プログラムに渡された引数の数を表す。argcがゼロでなければ、引数はargv[0]から、argv[argc-1]まで、null終端されたマルチバイト文字列の先頭文字へのポインターを指す。argv[0]は、プログラムが実行された時のプログラムの名前か、あるいは""となる。argcの値が負数になることはない。argv[argc]の値は0となる。
 </p>
 
-<pre>
-#include &lt;iostream&gt;
+<pre>#include &lt;iostream&gt;
 
 int main( int argc, char ** argv )
 {
@@ -3469,9 +3468,9 @@ int main( int argc, char ** argv )
     std::cout &lt;&lt; "program name: " &lt;&lt; argv[0] &lt;&lt; std::endl ;
 
     // 残りの引数
-    for ( char * ptr = argv[1] ; ptr != 0 ; ++ptr )
+    for ( std::size_t i = 1 ; argv[i] != nullptr ; ++i )
     {
-        std::cout &lt;&lt; ptr &lt;&lt; std::endl ;
+        std::cout &lt;&lt; argv[i] &lt;&lt; std::endl ;
     }
 }
 </pre>
