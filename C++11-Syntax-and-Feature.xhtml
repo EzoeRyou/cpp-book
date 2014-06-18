@@ -31306,7 +31306,7 @@ template &lt; int I, int J &gt;
 struct X ;
 
 // OK、識別子のみ
-template &lt; typename I &gt;
+template &lt; int I &gt;
 struct X&lt; I, I &gt; ;
 
 // エラー、部分的特殊化のテンプレート仮引数が関わる式
