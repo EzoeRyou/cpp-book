@@ -4413,7 +4413,7 @@ rvalueの名前の由来は、歴史的経緯で、right value(右辺値)であ�
 
 <h1>prvalue</h1>
 <p>
-prvalueは、rvalueのうちxvalueではないものである。これには、一時オブジェクトやリテラルの値や、特定のオブジェクトに関連付けられていない値などが該当する。例えば、関数呼び出しの戻り値で、型がリファレンスではないものもある。
+prvalue(pure rvalue)は、rvalueのうちxvalueではないものである。これには、一時オブジェクトやリテラルの値や、特定のオブジェクトに関連付けられていない値などが該当する。例えば、関数呼び出しの戻り値で、型がリファレンスではないものもある。
 </p>
 
 <p>
@@ -4616,7 +4616,7 @@ void f()
 {
     // この文脈でこの拡張アライメントがサポートされる場合、OK
     // サポートされない場合、エラー
-    alignas( alignof( std::max_align_t ) * 2 char buf[64] ;
+    alignas( alignof( std::max_align_t ) * 2 char buf[64] );
 }
 </pre>
 
@@ -10348,7 +10348,7 @@ bool g() { return false ; }
 int main()
 {
     // g()は呼ばれない。結果はtrue
-    f() &amp;&amp; g() ;
+    f() || g() ;
 }
 </pre>
 
@@ -10721,7 +10721,7 @@ lvalueからrvalueへの変換、ただし以下の場合を除く
 </li>
 
 <li>
-非volatileのglvalueが、constexprで定義された非volatileオブジェクトか、そのようなオブジェクトの変更可能なサブオブジェクを参照する場合
+非volatileのglvalueが、constexprで定義された非volatileオブジェクトか、そのようなオブジェクトの変更可能なサブオブジェクトを参照する場合
 </li>
 
 <li>
@@ -24455,7 +24455,7 @@ struct S
 union initialize
 {
     int member ;
-    initialize() : m1(0) { } // m1を0で初期化
+    initialize() : member(0) { } // memberを0で初期化
 } ;
 </pre>
 
@@ -24766,7 +24766,7 @@ struct X : Bases...
 <h1 id="deligating.constructor"><a href="#deligating.constructor">コンストラクターのデリゲート</a></h1>
 
 <p>
-メンバー初期化識別子に、クラス型を指定することによって、別のコンストラクターに初期化処理をデリゲートすることができる。これを、コンストラクターのデリゲート(delegate)という
+メンバー初期化識別子に、クラス型を指定することによって、別のコンストラクターに初期化処理を委譲することができる。これを、コンストラクターのデリゲート(delegate)という
 </p>
 
 <pre>
@@ -30140,7 +30140,7 @@ void f( param_pack const &amp; ... pack ) ;
 </pre>
 
 <p>
-この例では、"param const &amp;"がパターンとなる。
+この例では、"param_pack const &amp;"がパターンとなる。
 </p>
 
 <p>
@@ -31298,7 +31298,7 @@ struct NS::Outer&lt; T &gt;::Inner&lt; U * &gt; { } ;
 </p>
 
 <p>
-非型実引数の式は、部分的特殊化のテンプレート仮引数の識別子のみである時以外は、テンプレート仮引数とか関わってはならない。
+非型実引数の式は、部分的特殊化のテンプレート仮引数の識別子のみである時以外は、テンプレート仮引数と関わってはならない。
 </p>
 
 <pre>
