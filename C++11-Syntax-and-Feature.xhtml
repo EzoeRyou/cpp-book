@@ -4616,7 +4616,7 @@ void f()
 {
     // この文脈でこの拡張アライメントがサポートされる場合、OK
     // サポートされない場合、エラー
-    alignas( alignof( std::max_align_t ) * 2 char buf[64] );
+    alignas( alignof( std::max_align_t ) * 2 ) char buf[64];
 }
 </pre>
 
@@ -32823,7 +32823,7 @@ template &lt; &gt;
 struct X&lt;int&gt;
 {
     void g() ;
-}
+};
 </pre>
 
 <p>
