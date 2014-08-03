@@ -817,7 +817,7 @@ R"(\u3042)" ; // ユニバーサル文字名ではなく、文字通りに解釈
 u8"\u00E3\u0081\u0082" ; // OK、u8"あ"と同じ
 
 u"\ud842\udfb7" ; // エラー、サロゲートコードポイントを明示的に使うことはできない
-u"\u00020bb7" ; // OK、u"𠮷"と同じ
+u"\U00020bb7" ; // OK、u"𠮷"と同じ
 
 int \u0041 = 0 ; // エラー、ここで基本ソース文字セットは使えない
 int \u3042 = 0 ; // OK
@@ -4586,7 +4586,7 @@ int main()
 </p>
 
 <pre>
-struct B { long dluble d ; } ;
+struct B { long double d ; } ;
 struct D : virtual B { char c ; } ;
 </pre>
 
