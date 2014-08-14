@@ -6193,8 +6193,7 @@ struct Sum
 {
     int sum ;
     Sum() : sum(0) { }
-    void operator ()( int value )
-    { sum += value ; std::cout &lt;&lt; sum &lt;&lt; std::endl ; }
+    void operator ()( int value ) { sum += value ; }
 } ;
 
 int main()
@@ -10841,7 +10840,7 @@ C++規格は、浮動小数点数の計算精度を規定していないため�
 bool f()
 {
     char array[ 1 + int( 1 + 0.2 - 0.1 - 0.1 ) ] ; // コンパイル時評価される
-    int size = 1 + int( 1 + 0.1 - 0.1 - 0.1 ) ; // 実行時評価される可能性がある
+    int size = 1 + int( 1 + 0.2 - 0.1 - 0.1 ) ; // 実行時評価される可能性がある
 
     return sizeof( array ) == size ;
 }
