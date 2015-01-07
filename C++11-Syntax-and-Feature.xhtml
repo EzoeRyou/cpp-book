@@ -5849,7 +5849,7 @@ int main()
         [] { 
             int x = 0 ;
             ++x ;
-        }
+        };
     f() ;
 
     auto g = []
@@ -6381,10 +6381,10 @@ h = f ;
 
 <pre>
 void (*ptr1)(void) = []{} ;
-auto (*ptr2)(int, int, int) -&gt; int = [](int a, int b, int c) -&gt; int { return a + b + c ; }
+auto (*ptr2)(int, int, int) -&gt; int = [](int a, int b, int c) -&gt; int { return a + b + c ; };
 
 // 呼び出す。
-ptr1() ; ptr2() ;
+ptr1() ; ptr2(1, 2, 3) ;
 </pre>
 
 <p>
