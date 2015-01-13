@@ -14034,7 +14034,7 @@ using type = decltype( (x) ) ;
 <pre>
 // decltype(0)の型は、int
 decltype(0) t1 ;
-// delctype("hello")の型は、char const [6]
+// decltype("hello")の型は、char const [6]
 decltype("hello") t2 = "hello" ;
 </pre>
 </li>
@@ -16767,7 +16767,7 @@ int main()
     f() ; // エラー、削除された関数の呼び出し
     &amp;f ; // エラー、削除された関数のポインターを得ようとしている
     void (&amp; ref )(void) = f ; // エラー、削除された関数のリファレンスを得ようとしている
-    typdef decltype(f) type ; // エラー、未評価式の中で、削除された関数を参照している
+    typedef decltype(f) type ; // エラー、未評価式の中で、削除された関数を参照している
 }
 </pre>
 
@@ -19831,7 +19831,7 @@ union U : Base { } ;
 union Union_base { } ;
 union Derived : Union_base { } ;
 // エラー、リファレンス型の非staticデータメンバーを持てない
-uion U2 { int &amp; ref ; } ;
+union U2 { int &amp; ref ; } ;
 // エラー、非staticデータメンバーで、初期化子を持てるのは、ひとつだけ
 union U3
 {
@@ -23632,7 +23632,7 @@ struct Y
 <pre>
 struct Base
 { 
-    ~Base() = delte ;
+    ~Base() = delete ;
 } ;
 
 struct D1 : Base
@@ -29268,7 +29268,7 @@ struct X { } ;
 
 // OK
 template &lt; int i = ( 1 &gt; 2 ) &gt;
-sturct Y { } ;
+struct Y { } ;
 </pre>
 
 <p>
