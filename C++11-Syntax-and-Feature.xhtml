@@ -3595,7 +3595,7 @@ main関数からreturnするか、std::exitを呼び出した場合、staticス�
 </p>
 
 <p>
-スレッドストレージの有効期間(thread stroage duration)は、thread_localキーワードをつけて宣言した変数が該当する。この変数は、スレッドごとに異なるオブジェクトが割り当てられる。スレッドの解説は本書の範疇ではないので、詳しくは説明しない。
+スレッドストレージの有効期間(thread storage duration)は、thread_localキーワードをつけて宣言した変数が該当する。この変数は、スレッドごとに異なるオブジェクトが割り当てられる。スレッドの解説は本書の範疇ではないので、詳しくは説明しない。
 </p>
 
 <p>
@@ -20842,7 +20842,7 @@ struct Derived : Base { void f() &amp;&amp; { } } ;
 
 <pre>
 struct Base { virtual f() { } } ;
-struct Derived : Bae { virtual f() { } }  ; // オーバーライド
+struct Derived : Base { virtual f() { } }  ; // オーバーライド
 </pre>
 
 <p>
@@ -28396,7 +28396,7 @@ void * operator new[]( std::size_t size, const std::nothrow_t &amp; ) noexcept ;
 <dt>効果</dt>
 <dd>
 <p>
-この確保関数は、nothrow版のnew式から呼ばれる。エラー報告として、std::bac_allocをthrowする代わりに、nullポインターを返す。
+この確保関数は、nothrow版のnew式から呼ばれる。エラー報告として、std::bad_allocをthrowする代わりに、nullポインターを返す。
 </p>
 </dd>
 
@@ -32968,7 +32968,7 @@ struct Outer
 
 // OK、クラスの定義が先行している
 template &lt; &gt;
-struct OUter::Inner&lt;short&gt; { } ;
+struct Outer::Inner&lt;short&gt; { } ;
 </pre>
 
 <p>
@@ -33465,7 +33465,7 @@ int main()
 <h1 id="temp.deduct"><a href="#temp.deduct">テンプレートの実引数推定(Template argument deduction)</a></h1>
 
 <p>
-関数テンプレートの特殊化が参照される際には、テンプレート仮引数にはすべて、対応するテンプレート実引数がなければならない。テンプレート実引数は、明示的に指定することもできるが、関数テンプレートの場合は、文脈から推定させることができる。これを、テンプレートの実引数推定(argument dedcution)という。
+関数テンプレートの特殊化が参照される際には、テンプレート仮引数にはすべて、対応するテンプレート実引数がなければならない。テンプレート実引数は、明示的に指定することもできるが、関数テンプレートの場合は、文脈から推定させることができる。これを、テンプレートの実引数推定(argument deduction)という。
 </p>
 
 <pre>
