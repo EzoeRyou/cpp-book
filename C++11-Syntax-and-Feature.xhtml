@@ -220,7 +220,7 @@ function calculate_nth_child_element(element)
 {
     var n = 1 ;
     var iter = element.parentNode.firstElementChild ;
-    while (!iter.isSameNode(element))
+    while (iter !== element)
     {
         ++n ;
         iter = iter.nextElementSibling ;
