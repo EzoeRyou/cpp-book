@@ -38,7 +38,7 @@ pre
     overflow: auto ;
 }
 
-div#content pre 
+div#content pre
 {
     display : block ;
     font-family: "Inconsolata", "Consolas", monospace ;
@@ -126,7 +126,7 @@ a:hover
 article
 {
     display : block ;
-    
+
     margin-bottom : 4em ;
 }
 
@@ -161,7 +161,7 @@ table, th, td
 {
     padding : 0.5em ;
     border : black thin solid ;
-} 
+}
 
 ]]>
 </style>
@@ -246,7 +246,7 @@ function generate_chapter_numbers( li )
     { // continues to the upper chapter.
         /// parent.parentNode shall be an li element.
         return generate_chapter_numbers( parent.parentNode ) + "." + number ;
-    }        
+    }
 }
 
 // add chapter numbers to all anchor elements.
@@ -307,7 +307,7 @@ function generate_nested_index( parent, element, selector )
             continue ;
         }
 */
-        
+
         var li = document.createElement("li") ;
         li.appendChild( heading.firstElementChild.cloneNode( true ) ) ;
         ul.appendChild( li ) ;
@@ -324,11 +324,22 @@ function generate_index()
     generate_nested_index( index, content, "#content > article" ) ;
 }
 
+// scroll to anchor element
+function scroll_to_anchor()
+{
+    var anchor = location.hash.slice(1) ;
+    if ( anchor.length === 0 )
+        return ;
+    window.scrollTo( 0, document.getElementById(anchor).offsetTop ) ;
+}
+
 function listener()
 {
     generate_index() ;
     add_chapter_numbers() ;
     setup_heading_scroll_handler() ;
+    scroll_to_anchor();
+    window.removeEventListener( "load", listener, false ) ;
 }
 
 
